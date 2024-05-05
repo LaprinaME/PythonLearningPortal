@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Упражнения по Python</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .big-title {
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .text {
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-weight: bold;
+        }
+
+        .new_code {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="big-title">Упражнения по Python</h1>
+
+        <div class="exercise">
+            <h2 class="main-title">Упражнение №1</h2>
+            <p class="text">Напишите программу на Python для печати "Привет, мир!"</p>
+            <form id="form1" method="post">
+                <label for="code1" class="title">Ваш код на Python:</label><br>
+                <textarea id="code1" name="code" rows="6" class="new_code"></textarea><br>
+                <button type="button" class="button" onclick="checkAnswer(1)">Проверить</button>
+            </form>
+        </div>
+
+        <!-- Добавьте другие упражнения здесь -->
+
+        <div class="topic-content">
+            <!-- Результаты упражнений будут отображаться здесь -->
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(exerciseNumber) {
+            var userInput = document.getElementById('code' + exerciseNumber).value;
+            var correctAnswer = [
+                'print("Привет, мир!")',
+                // Добавьте другие правильные ответы здесь
+            ];
+
+            if (userInput.trim() === correctAnswer[exerciseNumber - 1].trim()) {
+                alert('Правильный ответ!');
+            } else {
+                alert('Неправильный ответ. Попробуйте еще раз.');
+            }
+        }
+    </script>
+</body>
+</html>
+

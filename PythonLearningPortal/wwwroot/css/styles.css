@@ -1,0 +1,54 @@
+﻿﻿ /* Основные стили */
+body {
+    font-family: 'Anonymous Pro', monospace; /* Тот же шрифт */
+    margin: 0; /* Убираем отступы */
+    background: linear-gradient(to bottom, #343946ff, #1a1d25ff); /* Градиентный фон */
+    color: #ffc504; /* Цвет текста */
+}
+
+.container {
+    text-align: center; /* Центрируем содержимое контейнера */
+    max-width: 800px; /* Ограничиваем ширину контейнера */
+    margin: 0 auto; /* Центрируем контейнер */
+}
+
+h1 {
+    font-size: 3.5rem;
+    line-height: 1;
+    font-family: 'Anonymous Pro', monospace;
+    color: #3aff04; /* Цвет текста */
+    margin-bottom: 20px; /* Добавляем отступ снизу */
+}
+
+p {
+    font-size: 1.2rem;
+    font-weight: 900;
+    font-family: 'Anonymous Pro', monospace;
+    color: #ffc504;
+    margin-bottom: 20px; /* Добавляем отступ снизу */
+    text-align: justify; /* Выравниваем текст по ширине */
+}
+
+a {
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 10px 20px; /* Задаем отступы */
+    border-radius: 20px; /* Делаем кнопки округлыми */
+    background-color: #ffc504; /* Цвет фона кнопок */
+    color: #0471ff; /* Цвет текста кнопок */
+    text-decoration: none; /* Убираем подчеркивание */
+    border: 2px solid #0471ff; /* Добавляем рамку */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Плавное изменение цвета */
+    margin: 0 10px; /* Добавляем отступы по бокам */
+    font-weight: bold;
+}
+
+    a:hover {
+        background-color: #ff0460; /* Изменяем цвет фона при наведении */
+        border-color: #bfff04; /* Изменяем цвет рамки при наведении */
+        color: #bfff04; /* Изменяем цвет текста при наведении */
+    }
+
+    a:active {
+        transform: translateY(1px); /* Создаем эффект нажатия */
+    }

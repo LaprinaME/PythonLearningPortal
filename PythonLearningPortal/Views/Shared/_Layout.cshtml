@@ -1,0 +1,21 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/header-footer.css"> <!-- стили для хедера и футера -->
+</head>
+<body>
+
+    <div class="header-container">
+        @RenderSection("Header", required: false)
+    </div>
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <div class="footer-container">
+        @RenderSection("Footer", required: false)
+    </div>
+
+</body>
+</html>

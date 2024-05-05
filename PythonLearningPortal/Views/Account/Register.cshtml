@@ -1,0 +1,40 @@
+﻿@model PythonLearningPortal.ViewModels.RegisterViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Регистрация</title>
+</head>
+<body>
+    <h2>Регистрация</h2>
+    <form asp-action="Register" method="post">
+        <div>
+            <label asp-for="Login">Login:</label>
+            <input asp-for="Login" />
+            <span asp-validation-for="Login"></span>
+        </div>
+        <div>
+            <label asp-for="Password">Password:</label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label asp-for="ConfirmPassword">Confirm Password:</label>
+            <input asp-for="ConfirmPassword" />
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
+        <div>
+            <label asp-for="RoleCode">Role Code:</label>
+            <input asp-for="RoleCode" />
+            <span asp-validation-for="RoleCode"></span>
+        </div>
+        <div>
+            <label asp-for="AccountCode">Account Code:</label>
+            <input asp-for="AccountCode" />
+            <span asp-validation-for="AccountCode"></span>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

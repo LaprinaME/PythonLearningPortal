@@ -1,0 +1,66 @@
+﻿@using PythonLearningPortal.ViewModels
+@model List<TopicViewModel>
+
+@{
+    // Создание фиктивных описаний для тем и подтем
+    var topicDescriptions = new Dictionary<int, string>
+    {
+        { 1, "Описание темы 1" },
+        { 2, "Описание темы 2" },
+        // Добавьте описания для других тем
+    };
+
+    var subtopicDescriptions = new Dictionary<int, string>
+    {
+        { 1, "Описание подтемы 1" },
+        { 2, "Описание подтемы 2" },
+        // Добавьте описания для других подтем
+    };
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учебник Python</title>
+    <link rel="stylesheet" href="topic.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h1 class="big-title">Список тем и подтем:</h1>
+        <ul class="topics">
+            @foreach (var topic in Model)
+            {
+                <li class="darkgreen" onclick="toggleContent('@topic.TopicId')">
+                    <span class="topic-title">@topic.TopicTitle</span>
+                    <p class="description">@topicDescriptions.GetValueOrDefault(topic.TopicId, "Описание отсутствует")</p>
+                    <ul class="subtopics">
+                        @foreach (var subtopic in topic.Subtopics)
+                        {
+                            <li class="subtopic" onclick="toggleSubContent('@subtopic.SubtopicId')"> @subtopic.SubtopicTitle </li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+    <main class='container'>
+        @foreach (var topic in Model)
+        {
+            <div class="topic-content" id="@topic.TopicId">
+                <h2>@topic.TopicTitle</h2>
+                <p class="description">@topicDescriptions.GetValueOrDefault(topic.TopicId, "Описание отсутствует")</p>
+            </div>
+            @foreach (var subtopic in topic.Subtopics)
+            {
+                <div class="subtopic-content" id="@subtopic.SubtopicId">
+                    <h3>@subtopic.SubtopicTitle</h3>
+                    <p class="description">@subtopicDescriptions.GetValueOrDefault(subtopic.SubtopicId, "Описание отсутствует")</p>
+                </div>
+            }
+        }
+    </main>
+    <script src="topic.js"></script>
+</body>
+</html>

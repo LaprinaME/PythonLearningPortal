@@ -1,0 +1,17 @@
+﻿@model PythonLearningPortal.ViewModels.LoginViewModel
+
+<form method="post" asp-action="Login" asp-controller="Account" style="margin-top: 200px;">
+    <div>
+        <label asp-for="Login"></label>
+        <input asp-for="Login" />
+        <span asp-validation-for="Login"></span>
+    </div>
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div>
+        <input type="submit" value="Войти" />
+    </div>
+</form>

@@ -1,0 +1,36 @@
+﻿@model List<PythonLearningPortal.Models.Тесты>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список тестов</title>
+</head>
+<body>
+    <h1>Список тестов</h1>
+    <ul>
+        @foreach (var test in Model)
+        {
+            <li>
+                <h2>@test.Название_теста</h2>
+                <form action="@Url.Action("Index", "Tests")" method="post">
+                    <input type="hidden" name="testId" value="@test.Код_теста" />
+
+                    <p>Вопрос 1: Что такое Python?</p>
+                    <input type="radio" id="q1a1" name="q1" value="1"><label for="q1a1">Язык программирования</label><br>
+                    <input type="radio" id="q1a2" name="q1" value="0"><label for="q1a2">Вид змей</label><br>
+                    <input type="radio" id="q1a3" name="q1" value="0"><label for="q1a3">Спецификация</label><br>
+
+                    <p>Вопрос 2: Каковы основные преимущества Python?</p>
+                    <input type="checkbox" id="q2a1" name="q2" value="1"><label for="q2a1">Простота</label><br>
+                    <input type="checkbox" id="q2a2" name="q2" value="1"><label for="q2a2">Многофункциональность</label><br>
+                    <input type="checkbox" id="q2a3" name="q2" value="0"><label for="q2a3">Высокая скорость выполнения</label><br>
+
+                    <button type="submit">Отправить ответы</button>
+                </form>
+            </li>
+        }
+    </ul>
+</body>
+</html>

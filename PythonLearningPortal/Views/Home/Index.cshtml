@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="@Url.Content("~/css/styles.css")">
+    <style>
+        body {
+            font-family: 'Anonymous Pro', monospace; /* Тот же шрифт */
+            margin: 0; /* Убираем отступы */
+            background: linear-gradient(to bottom, #343946ff, #1a1d25ff); /* Градиентный фон */
+        }
+    </style>
+</head>
+<body>
+    @section Header {
+        <header>
+            <h1>Интерактивный учебник по Python</h1>
+        </header>
+    }
+    <div class="container">
+        <p>Здесь вы можете изучать Python и решать практические задания.</p>
+        <p><a href="/Account/Login">Войти</a> или <a href="/Account/Register">Зарегистрироваться</a></p>
+        <div class="image-container">
+            <img src="images/guido.jpg" alt="Гвидо ван Россум">
+        </div>
+    </div>
+    @section Footer {
+        <footer>
+            &copy; «Python - это эксперимент по определению степени свободы программистов.»
+        </footer>
+    }
+</body>
+</html>

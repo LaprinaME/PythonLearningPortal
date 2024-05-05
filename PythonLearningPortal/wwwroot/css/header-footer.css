@@ -1,0 +1,21 @@
+﻿.header-container, .footer-container {
+    text-align: center; /* Выравнивание по центру */
+    padding: 20px; /* Внутренний отступ */
+    color: #fff; /* Цвет текста */
+}
+
+
+header {
+    background: linear-gradient(to bottom, #1a1d25ff, #343946ff); /* Градиентный фон */
+    color: #ffc504; /* Цвет текста */
+    text-align: center; /* Центрируем текст */
+    padding: 20px 0; /* Добавляем отступы */
+}
+
+footer {
+    background: linear-gradient(to top, #1a1d25ff, #343946ff); /* Градиентный фон */
+    color: #ffc504; /* Цвет текста */
+    text-align: center; /* Центрируем текст */
+    padding: 20px 0; /* Добавляем отступы */
+    font-size: 1.2rem;
+}
