@@ -1,6 +1,6 @@
 ﻿/* Дополнительные стили для страницы регистрации */
 body {
-    background-attachment: fixed; /* Фон зафиксирован */
+    background-attachment: fixed; 
     font-family: 'Anonymous Pro', monospace;
 }
 h2 {
