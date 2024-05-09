@@ -59,12 +59,17 @@ namespace PythonLearningPortal.Controllers
                         if (roleCode == 1)
                         {
                             // Роль с индексом 1 - перенаправление на главную страницу
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "MenuStudent");
                         }
                         else if (roleCode == 2)
                         {
                             // Роль с индексом 2 - перенаправление на страницу меню
-                            return RedirectToAction("Index", "Tests");
+                            return RedirectToAction("Index", "MenuTeacher");
+                        }
+                        else if (roleCode == 3)
+                        {
+                            // Роль с индексом 2 - перенаправление на страницу меню
+                            return RedirectToAction("Index", "MenuAdmin");
                         }
                     }
                     else
@@ -122,17 +127,18 @@ namespace PythonLearningPortal.Controllers
                 // Проверка роли и перенаправление на соответствующую страницу
                 if (model.RoleCode == 1)
                 {
-                    // Роль администратора, перенаправление на главную страницу
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "MenuStudent");
                 }
                 else if (model.RoleCode == 2)
                 {
-                    // Роль пользователя, перенаправление на страницу меню
-                    return RedirectToAction("Index", "Menu");
+                    return RedirectToAction("Index", "MenuTeacher");
+                }
+                else if (model.RoleCode == 3)
+                {
+                    return RedirectToAction("Index", "MenuAdmin");
                 }
                 else
                 {
-                    // Если роль не определена, перенаправляем на главную страницу
                     return RedirectToAction("Index", "Home");
                 }
             }

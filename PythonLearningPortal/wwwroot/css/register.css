@@ -1,0 +1,98 @@
+﻿/* Дополнительные стили для страницы регистрации */
+body {
+    background-attachment: fixed; /* Фон зафиксирован */
+    font-family: 'Anonymous Pro', monospace;
+}
+h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    line-height: 1;
+    font-family: 'Times New Roman', Times, serif;
+    color: #ff4f37; /* Цвет текста */
+    margin-bottom: 20px; /* Добавляем отступ снизу */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Серая тень текста */
+}
+
+.register-container {
+    width: 50%; /* Ширина контейнера */
+    margin: auto; /* Центрирование по горизонтали */
+    border-radius: 10px; /* Скругление углов контейнера */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Тень контейнера */
+    margin-top: 150px; /* Отступ сверху */
+    color: #222; /* Цвет текста */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+    width: 100%; /* Ширина инпутов и кнопки */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Внешний отступ снизу */
+    border: none; /* Убираем границы */
+    border-radius: 5px; /* Скругление углов */
+    font-size: 16px; /* Размер шрифта */
+}
+
+input[type="submit"] {
+    background-color: #FF8C69; /* Цвет фона кнопки */
+    color: #222;
+    cursor: pointer; /* Показываем, что это кнопка */
+    transition: background-color 0.3s; /* Плавное изменение цвета фона */
+}
+
+    input[type="submit"]:hover {
+        background-color: #FF9BAA; /* Изменение цвета фона при наведении */
+    }
+
+.button-container {
+    text-align: center; /* Выравнивание текста по центру */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.return-button {
+    padding: 10px 20px; /* Внутренние отступы кнопки */
+    background-color: #99FF99; /* Цвет фона кнопки */
+    color: #222; /* Цвет текста кнопки */
+    border: none; /* Убираем границы */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer; /* Показываем, что это кнопка */
+    transition: background-color 0.3s; /* Плавное изменение цвета фона */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+    .return-button:hover {
+        background-color: #AFDAFC; /* Изменение цвета фона при наведении */
+    }
+
+
+/* Дополнительные стили для ввода и кнопки */
+input[type="text"],
+input[type="password"] {
+    border-radius: 20px; /* Округление углов для ввода и кнопки */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Внешний отступ снизу */
+    font-size: 16px; /* Размер шрифта */
+    border: none; /* Убираем границы */
+    outline: none; /* Убираем выделение при фокусе */
+    color: #222;
+}
+
+button[type="submit"] {
+    background-color: #99FF99; /* Цвет фона кнопки */
+    color: #222; /* Цвет текста кнопки */
+    cursor: pointer; /* Показываем, что это кнопка */
+    transition: background-color 0.3s; /* Плавное изменение цвета фона */
+    margin-top: 10px; /* Отступ сверху */
+    border-radius: 20px; /* Округление углов для ввода и кнопки */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Внешний отступ снизу */
+    font-size: 16px; /* Размер шрифта */
+    border: none; /* Убираем границы */
+    transition: background-color 0.3s; /* Плавное изменение цвета фона */
+}
+    button[type="submit"]:hover {
+        background-color: #AFDAFC; /* Изменение цвета фона при наведении */
+    }
+

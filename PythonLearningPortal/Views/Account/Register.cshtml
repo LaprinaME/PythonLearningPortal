@@ -3,12 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
     <title>Регистрация</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/register.css")">
 </head>
-<body>
+<body style="background-image: url('/images/register.jpg');">
     <h2>Регистрация</h2>
-    <form asp-action="Register" method="post">
+    <form asp-action="Register" method="post" class="register-container" style="background:linear-gradient(to right, #FCE883, #AFDAFC, #FF8C69); ">
+        <!-- Добавляем класс контейнеру формы -->
         <div>
             <label asp-for="Login">Login:</label>
             <input asp-for="Login" />
@@ -34,7 +36,15 @@
             <input asp-for="AccountCode" />
             <span asp-validation-for="AccountCode"></span>
         </div>
-        <button type="submit">Register</button>
+        <div>
+            <button type="submit">Зарегистрироваться</button> <!-- Изменено название кнопки -->
+        </div>
     </form>
+    <div class="button-container">
+        @* Кнопка "Вернуться на главную страницу" *@
+        <form method="get" action="/Home/Index">
+            <button type="submit" class="return-button">Вернуться на главную страницу</button>
+        </form>
+    </div>
 </body>
 </html>

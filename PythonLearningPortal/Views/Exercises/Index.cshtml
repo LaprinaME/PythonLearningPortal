@@ -4,48 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Упражнения по Python</title>
-    <style>
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .big-title {
-            text-align: center;
-        }
-
-        .main-title {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .text {
-            margin-bottom: 20px;
-        }
-
-        .title {
-            font-weight: bold;
-        }
-
-        .new_code {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-            .button:hover {
-                background-color: #0056b3;
-            }
-    </style>
+    <link rel="stylesheet" href="@Url.Content("~/css/exercises.css")">
 </head>
 <body>
     <div class="container">
@@ -61,22 +20,48 @@
             </form>
         </div>
 
-        <!-- Добавьте другие упражнения здесь -->
+        <div class="exercise">
+            <h2 class="main-title">Упражнение №2</h2>
+            <p class="text">Напишите программу, в которой пользователь вводит температуру в градусах Цельсия, а программа переводит их в градусы Фаренгей́та. Для перевода применяется формула: \( °F = \left( \frac{9}{5} \right) \times °C + 32 \)</p>
+            <form id="form2" method="post">
+                <label for="code2" class="title">Ваш код на Python:</label><br>
+                <textarea id="code2" name="code" rows="6" class="new_code"></textarea><br>
+                <button type="button" class="button" onclick="checkAnswer(2)">Проверить</button>
+            </form>
+        </div>
 
-        <div class="topic-content">
-            <!-- Результаты упражнений будут отображаться здесь -->
+        <div class="exercise">
+            <h2 class="main-title">Упражнение №3</h2>
+            <p class="text">Дан список a = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]. Выведите все элементы, которые меньше 5.</p>
+            <form id="form3" method="post">
+                <label for="code3" class="title">Ваш код на Python:</label><br>
+                <textarea id="code3" name="code" rows="6" class="new_code"></textarea><br>
+                <button type="button" class="button" onclick="checkAnswer(3)">Проверить</button>
+            </form>
+        </div>
+
+        <div class="exercise">
+            <h2 class="main-title">Упражнение №4</h2>
+            <p class="text">Даны списки: a = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]; b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]. Нужно вернуть список, который состоит из элементов, общих для этих двух списков.</p>
+            <form id="form4" method="post">
+                <label for="code4" class="title">Ваш код на Python:</label><br>
+                <textarea id="code4" name="code" rows="6" class="new_code"></textarea><br>
+                <button type="button" class="button" onclick="checkAnswer(4)">Проверить</button>
+            </form>
         </div>
     </div>
 
     <script>
         function checkAnswer(exerciseNumber) {
             var userInput = document.getElementById('code' + exerciseNumber).value;
-            var correctAnswer = [
+            var correctAnswers = [
                 'print("Привет, мир!")',
-                // Добавьте другие правильные ответы здесь
+                '(9/5)*c + 32',
+                'for elem in a:\n    if elem < 5:\n        print(elem)',
+                'result = [elem for elem in a if elem in b]'
             ];
 
-            if (userInput.trim() === correctAnswer[exerciseNumber - 1].trim()) {
+            if (userInput.trim() === correctAnswers[exerciseNumber - 1].trim()) {
                 alert('Правильный ответ!');
             } else {
                 alert('Неправильный ответ. Попробуйте еще раз.');
@@ -85,4 +70,3 @@
     </script>
 </body>
 </html>
-

@@ -1,0 +1,60 @@
+﻿﻿ /* Дополнительные стили для страницы входа */
+body {
+    background: linear-gradient(to right, #FFC1CC, #FDC1CD, #FCC1CE, #FAC2CE, #F9C2CF, #F7C2D0, #F6C3D1, #F4C3D1, #F3C3D2, #F1C4D3, #F0C4D3, #EEC4D4, #EDC4D5, #EBC5D6, #EAC5D6, #E8C5D7, #E7C6D8, #E5C6D8, #E4C6D9, #E2C7DA, #E1C7DB, #DFC7DB, #DDC8DC, #DCC8DD, #DAC8DE, #D9C9DE, #D7C9DF, #D6C9E0, #D4CAE0, #D3CAE1, #D1CAE2, #D0CBE2, #CECBE3, #CDCBE4, #CBCCE5, #CACCE5, #C8CCE6, #C7CDE7, #C5CDE7, #C4CDE8, #C2CEE9, #C1CEE9, #BFCEE9, #BFCEE9, #C0CDE9, #C0CCE8, #C1CCE8, #C1CCE8, #C2CBE8, #C2CBE7, #C3CAE7, #C3CAE7, #C4CAE6, #C4C9E6, #C5C9E6, #C5C9E5, #C6C8E5, #C6C8E5, #C7C8E4, #C7C7E4, #C8C7E4, #C8C7E3, #C9C6E3, #C9C6E3, #CAC5E2, #CAC5E2, #CBC5E2, #CBC5E1, #CCC4E1, #CCC4E1, #CDC3E0, #CDC3E0, #CEC3E0, #CEC3DF, #CFC2DF, #CFC2DF, #D0C2DE, #D0C1DE, #D1C1DE, #D1C1DD, #D2C0DD, #D2C0DD, #D3C0DC, #D3BFDC, #D4BFDC, #D4BFDB, #D5BEDB, #D5BEDB, #D6BEDA, #D6BEDE, #D5BFD2, #D4C0C6, #D4C0BA, #D3C0AE, #D3C1A2, #D2C195, #D1C189, #D1C17D, #D0C171, #D0C165, #CFC159, #CEC14D, #CEC141, #CDC134, #CDC128, #CCC11C, #CBC110, #CBC104, #CABF08, #CABF02, #CABE03, #C9BE04, #C9BD05, #C9BD06, #C8BD07, #C8BC08, #C8BC09, #C7BC0A, #C7BB0B, #C7BB0C, #C6BB0D, #C6BA0E, #C6BA0F, #C5BA10, #C5B910, #C5B911, #C4B912, #C4B913, #C4B914, #C3B915, #C3B916, #C3B917, #C2B918, #C2B819, #C2B81A, #C1B81B, #C1B81C, #C1B81D, #C0B81E, #C0B81F, #C0B820, #BFB821, #BFB822, #BFB823, #BEB824, #BEB825, #BEB826, #BDB827, #BDB828, #BDB829, #BCB82A, #BCB82B, #BCB82C, #BBB82D, #BBB82E, #BBB82F, #BAB830, #BAB831, #BAB832, #B9B833, #B9B834, #B9B835, #B8B836, #B8B837, #B8B838, #B7B839, #B7B83A, #B7B83B, #B6B83C, #B6B83D, #B6B83E, #B5B83F, #B5B840, #B5B841, #B4B842, #B4B843, #B4B844, #B3B845, #B3B846, #B3B847, #B2B848, #B2B849, #B2B84A, #B1B84B, #B1B84C, #B1B84D, #B0B84E, #B0B84F, #B0B850, #AFB851, #AFB852, #AFB853, #AEB854, #AEB855, #AEB856, #ADB857, #ADB858, #ADB859, #ACB85A, #ACB85B, #ACB85C, #ABB85D, #ABB85E, #ABB85F, #AAB860, #AAB861, #AAB862, #A9B863, #A9B864, #A9B865, #A8B866, #A8B867, #A8B868, #A7B869, #A7B86A, #A7B86B, #A6B86C, #A6B86D, #A6B86E, #A5B86F, #A5B870, #A5B871, #A4B872, #A4B873, #A4B874, #A3B875, #A3B876, #A3B877, #A2B878, #A2B879, #A2B87A, #A1B87B, #A1B87C, #A1B87D, #A0B87E, #A0B87F, #A0B880, #9FB881, #9FB882, #9FB883, #9EB884, #9EB885, #9EB886, #9DB887, #9DB888, #9DB889, #9CB88A, #9CB88B, #9CB88C, #9BB88D, #9BB88E, #9BB88F, #9AB890, #9AB891, #9AB892, #99B893, #99B894, #99B895, #98B896, #98B897, #98B898, #97B899, #97B89A, #97B89B, #96B89C, #96B89D, #96B89E, #95B89F, #95B8A0, #95B8A1, #94B8A2, #94B8A3, #94B8A4, #93B8A5, #93B8A6, #93B8A7, #92B8A8, #92B8A9, #92B8AA, #91B8AB, #91B8AC, #91B8AD, #90B8AE, #90B8AF, #90B8B0, #8FB8B1, #8FB8B2, #8FB8B3, #8EB8B4, #8EB8B5, #8EB8B6, #8DB8B7, #8DB8B8, #8DB8B9, #8CB8BA, #8CB8BB, #8CB8BC, #8BB8BD, #8BB8BE, #8BB8BF, #8AB8C0, #8AB8C1, #8AB8C2, #89B8C3, #89B8C4, #89B8C5, #88B8C6, #88B8C7, #88B8C8, #87B8C9);
+    background-size: cover; /* Масштабирование фона */
+    background-attachment: fixed; /* Фон зафиксирован */
+    font-family: 'Anonymous Pro', monospace;
+}
+
+.login-container {
+    width: 50%; /* Ширина контейнера */
+    margin: auto; /* Центрирование по горизонтали */
+    background-color: rgba(255, 178, 139, 0.8); /* Цвет фона контейнера */
+    border-radius: 10px; /* Скругление углов контейнера */
+    padding: 20px; /* Внутренние отступы */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Тень контейнера */
+    margin-top: 150px; /* Отступ сверху */
+    color: #fff; /* Цвет текста */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+    width: 100%; /* Ширина инпутов и кнопки */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Внешний отступ снизу */
+    border: none; /* Убираем границы */
+    border-radius: 5px; /* Скругление углов */
+    font-size: 16px; /* Размер шрифта */
+}
+
+input[type="submit"] {
+    background-color: #99FF99; /* Цвет фона кнопки */
+    color: #474A51; /* Цвет текста кнопки */
+    cursor: pointer; /* Показываем, что это кнопка */
+    transition: background-color 0.3s; /* Плавное изменение цвета фона */
+}
+
+    input[type="submit"]:hover {
+        background-color: #AFDAFC; /* Изменение цвета фона при наведении */
+    }
+
+.button-container {
+    text-align: center; /* Выравнивание текста по центру */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.return-button {
+    padding: 10px 20px; /* Внутренние отступы кнопки */
+    background-color: #FF8C69; /* Цвет фона кнопки */
+    color: #fff; /* Цвет текста кнопки */
+    border: none; /* Убираем границы */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer; /* Показываем, что это кнопка */
+    transition: background-color 0.3s; /* Плавное изменение цвета фона */
+    margin-top: 20px; /* Отступ сверху */
+}
+
+    .return-button:hover {
+        background-color: #FF9BAA; /* Изменение цвета фона при наведении */
+    }

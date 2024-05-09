@@ -2,7 +2,7 @@
 
 namespace PythonLearningPortal.Controllers
 {
-    public class MenuController : Controller
+    public class MenuTeacherController : Controller
     {
         // GET: /Menu
         [HttpGet]
