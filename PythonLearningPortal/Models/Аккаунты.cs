@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PythonLearningPortal.Models;
 
 namespace PythonLearningPortal.Models
 {
@@ -23,3 +24,4 @@ namespace PythonLearningPortal.Models
         public Роли Роли { get; set; }
     }
 }
+

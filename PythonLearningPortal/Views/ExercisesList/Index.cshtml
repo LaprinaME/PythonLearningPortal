@@ -1,0 +1,65 @@
+﻿@model List<PythonLearningPortal.Models.Упражнения>
+
+@{
+    ViewData["Title"] = "Список упражнений";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #64b5f6, #9575cd);
+        font-family: Arial, sans-serif; /* Шрифт для текста */
+    }
+
+    h1 {
+        color: #fff; /* Цвет заголовка */
+        text-align: center; /* Выравнивание текста по центру */
+        padding: 20px 0; /* Отступы сверху и снизу */
+    }
+
+    table {
+        width: 100%; /* Ширина таблицы по всей ширине экрана */
+        border-collapse: collapse; /* Скрытие границ между ячейками */
+        border: 5px solid #fff; /* Цветная граница таблицы */
+        border-radius: 10px; /* Скругление углов таблицы */
+    }
+
+    th, td {
+        padding: 10px; /* Внутренние отступы ячеек */
+        text-align: center; /* Выравнивание текста по центру */
+    }
+
+    thead {
+        background-color: #fff; /* Цвет фона заголовка таблицы */
+        color: #333; /* Цвет текста заголовка таблицы */
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Цвет фона для четных строк */
+    }
+
+    tbody tr:hover {
+        background-color: #ddd; /* Цвет фона при наведении на строку */
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Код упражнения</th>
+            <th>Название упражнения</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exercise in Model)
+        {
+            <tr>
+                <td>@exercise.Код_упражнения</td>
+                <td>@exercise.Название_упражнения</td>
+                <td>@exercise.Описание</td>
+            </tr>
+        }
+    </tbody>
+</table>

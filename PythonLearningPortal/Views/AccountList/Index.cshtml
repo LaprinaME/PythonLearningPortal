@@ -1,0 +1,67 @@
+﻿@model List<PythonLearningPortal.Models.Аккаунты>
+
+@{
+    ViewData["Title"] = "Список аккаунтов";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #00ff9b, #ffcd3c);
+        font-family: Arial, sans-serif; /* Шрифт для текста */
+    }
+
+    h1 {
+        color: #fff; /* Цвет заголовка */
+        text-align: center; /* Выравнивание текста по центру */
+        padding: 20px 0; /* Отступы сверху и снизу */
+    }
+
+    table {
+        width: 100%; /* Ширина таблицы по всей ширине экрана */
+        border-collapse: collapse; /* Скрытие границ между ячейками */
+        border: 5px solid #fff; /* Цветная граница таблицы */
+        border-radius: 10px; /* Скругление углов таблицы */
+    }
+
+    th, td {
+        padding: 10px; /* Внутренние отступы ячеек */
+        text-align: center; /* Выравнивание текста по центру */
+    }
+
+    thead {
+        background-color: #fff; /* Цвет фона заголовка таблицы */
+        color: #333; /* Цвет текста заголовка таблицы */
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Цвет фона для четных строк */
+    }
+
+    tbody tr:hover {
+        background-color: #ddd; /* Цвет фона при наведении на строку */
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Код аккаунта</th>
+            <th>Логин</th>
+            <th>Пароль</th>
+            <th>Роль</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model)
+        {
+            <tr>
+                <td>@account.Код_аккаунта</td>
+                <td>@account.Логин</td>
+                <td>@account.Пароль</td>
+                <td>@account.Роли.Название_роли</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,26 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PythonLearningPortal.DataContext;
-using PythonLearningPortal.Models;
 using System.Threading.Tasks;
 
 namespace PythonLearningPortal.Controllers
 {
-    public class TestsListController : Controller
+    public class TopicListController : Controller
     {
         private readonly PythonLearningPortalContext _context;
 
-        public TestsListController(PythonLearningPortalContext context)
+        public TopicListController(PythonLearningPortalContext context)
         {
             _context = context;
         }
 
-        // GET: TestsList
+        // GET: TopicList
         public async Task<IActionResult> Index()
         {
-            var tests = await _context.Тесты.ToListAsync();
-            return View(tests);
+            var topics = await _context.Темы.ToListAsync();
+            return View(topics);
         }
     }
 }
-

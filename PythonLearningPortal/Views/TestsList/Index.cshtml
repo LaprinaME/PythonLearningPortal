@@ -1,0 +1,63 @@
+﻿@model List<PythonLearningPortal.Models.Тесты>
+
+@{
+    ViewData["Title"] = "Список тестов";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #D4145A, #FBB03B, #FFB20F, #FFD271);
+        font-family: Arial, sans-serif; /* Шрифт для текста */
+    }
+
+    h1 {
+        color: #fff; /* Цвет заголовка */
+        text-align: center; /* Выравнивание текста по центру */
+        padding: 20px 0; /* Отступы сверху и снизу */
+    }
+
+    table {
+        width: 100%; /* Ширина таблицы по всей ширине экрана */
+        border-collapse: collapse; /* Скрытие границ между ячейками */
+        border: 5px solid #fff; /* Цветная граница таблицы */
+        border-radius: 10px; /* Скругление углов таблицы */
+    }
+
+    th, td {
+        padding: 10px; /* Внутренние отступы ячеек */
+        text-align: center; /* Выравнивание текста по центру */
+    }
+
+    thead {
+        background-color: #fff; /* Цвет фона заголовка таблицы */
+        color: #333; /* Цвет текста заголовка таблицы */
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Цвет фона для четных строк */
+    }
+
+    tbody tr:hover {
+        background-color: #ddd; /* Цвет фона при наведении на строку */
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Код теста</th>
+            <th>Название теста</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var test in Model)
+        {
+            <tr>
+                <td>@test.Код_теста</td>
+                <td>@test.Название_теста</td>
+            </tr>
+        }
+    </tbody>
+</table>

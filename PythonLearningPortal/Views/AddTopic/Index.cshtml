@@ -1,0 +1,55 @@
+﻿@model PythonLearningPortal.ViewModels.AddTopicViewModel
+
+@{
+    ViewData["Title"] = "Добавление новой темы";
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #FFD1DC, #B0E0E6);
+        font-family: Arial, sans-serif; /* Шрифт для текста */
+    }
+
+    h1 {
+        color: #000; /* Цвет заголовка */
+        text-align: center; /* Выравнивание текста по центру */
+        padding: 20px 0; /* Отступы сверху и снизу */
+    }
+
+    .form-group {
+        margin-bottom: 20px; /* Отступ снизу между группами элементов формы */
+    }
+
+    .btn-primary {
+        background-color: #FF1493; /* Цвет фона кнопки */
+        border-color: #FF1493; /* Цвет границы кнопки */
+    }
+
+        .btn-primary:hover {
+            background-color: #FF69B4; /* Цвет фона кнопки при наведении */
+            border-color: #FF69B4; /* Цвет границы кнопки при наведении */
+        }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TopicCode" class="control-label">Код темы</label>
+                <input asp-for="TopicCode" class="form-control" />
+                <span asp-validation-for="TopicCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameTopic" class="control-label">Название темы</label>
+                <input asp-for="NameTopic" class="form-control" />
+                <span asp-validation-for="NameTopic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

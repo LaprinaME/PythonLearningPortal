@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace PythonLearningPortal.Controllers
 {
-    public class TestsListController : Controller
+    public class RoleController : Controller
     {
         private readonly PythonLearningPortalContext _context;
 
-        public TestsListController(PythonLearningPortalContext context)
+        public RoleController(PythonLearningPortalContext context)
         {
             _context = context;
         }
 
-        // GET: TestsList
+        // GET: RoleList
         public async Task<IActionResult> Index()
         {
-            var tests = await _context.Тесты.ToListAsync();
-            return View(tests);
+            var roles = await _context.Роли.ToListAsync();
+            return View(roles);
         }
     }
 }
-

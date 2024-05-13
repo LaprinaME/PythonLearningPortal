@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace PythonLearningPortal.Controllers
 {
-    public class ExercisesController : Controller
+    public class ExercisesListController : Controller
     {
         private readonly PythonLearningPortalContext _context;
 
-        public ExercisesController(PythonLearningPortalContext context)
+        public ExercisesListController(PythonLearningPortalContext context)
         {
             _context = context;
         }
@@ -21,23 +21,3 @@ namespace PythonLearningPortal.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
