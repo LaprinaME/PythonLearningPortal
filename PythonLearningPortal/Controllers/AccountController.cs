@@ -58,17 +58,17 @@ namespace PythonLearningPortal.Controllers
                         // Перенаправляем на соответствующую страницу в зависимости от роли
                         if (roleCode == 1)
                         {
-                            // Роль с индексом 1 - перенаправление на главную страницу
+                            // Роль с индексом 1 - перенаправление на страницу меню студента
                             return RedirectToAction("Index", "MenuStudent");
                         }
                         else if (roleCode == 2)
                         {
-                            // Роль с индексом 2 - перенаправление на страницу меню
+                            // Роль с индексом 2 - перенаправление на страницу меню учителя
                             return RedirectToAction("Index", "MenuTeacher");
                         }
                         else if (roleCode == 3)
                         {
-                            // Роль с индексом 2 - перенаправление на страницу меню
+                            // Роль с индексом 3 - перенаправление на страницу меню админа
                             return RedirectToAction("Index", "MenuAdmin");
                         }
                     }

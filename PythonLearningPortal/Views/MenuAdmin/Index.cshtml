@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Меню для учителей</title>
+    <title>Меню для админов</title>
     <style>
         body {
             font-family: 'Anonymous Pro', monospace;
@@ -91,25 +91,30 @@
 </head>
 <body>
     <div class="welcome-message">
-        <h2>Добро пожаловать, Учитель!</h2>
-        <p>Вам предоставлен расширенный доступ к веб-сайту.</p>
+        <h2>Добро пожаловать, Админ!</h2>
+        <p>Вам предоставлен полный доступ к веб-сайту.</p>
     </div>
     <div class="menu-container">
         <h2>Меню</h2>
-        <form method="post" action="/MenuTeacher">
+        <form method="post" action="/MenuAdmin">
             <label for="page">Выберите страницу:</label>
             <select name="page" id="page">
                 <option value="Home/Index">Главная страница</option>
+                <option value="Role/Index">Список ролей</option>
+                <option value="AccountList">Список аккаунтов</option>
+                <option value="UsersList">Список пользователей</option>
                 <option value="Exercises/Index">Упражнения</option>
                 <option value="Tests/Index">Тесты</option>
                 <option value="Topic/Index">Теория</option>
                 <option value="EditTopic/Index">Редактирование тем</option>
                 <option value="AddTopic/Index">Добавление тем</option>
+                <option value="AddSubtopic">Добавление подтем</option>
                 <option value="TopicList/Index">Список тем</option>
                 <option value="SubtopicList/Index">Список подтем</option>
-                <option value="TestsList/Index">Список тестов</option>
-                <option value="ExercisesList/Index">Список упражнений</option>
+                <option value="TestsList">Список тестов</option>
+                <option value="ExercisesList">Список упражнений</option>
                 <option value="DeleteTopic">Удаление тем</option>
+                <option value="EditSubtopic">Редактирование подтем</option>
             </select>
             <button type="submit">Перейти</button>
         </form>

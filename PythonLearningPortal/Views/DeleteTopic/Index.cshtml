@@ -1,0 +1,71 @@
+﻿@model PythonLearningPortal.ViewModels.DeleteTopicViewModel
+
+@{
+    ViewData["Title"] = "Удаление темы";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    .btn-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #555;
+        }
+</style>
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <form asp-action="Delete" method="post">
+        <div class="form-group">
+            <label asp-for="TopicCode">Код темы:</label>
+            <input asp-for="TopicCode" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label asp-for="NameTopic">Название темы:</label>
+            <input asp-for="NameTopic" class="form-control" readonly />
+        </div>
+        <div class="btn-container">
+            <button type="submit" class="btn">Удалить</button>
+            <a asp-action="Index" class="btn btn-default">Отмена</a>
+        </div>
+    </form>
+</div>
