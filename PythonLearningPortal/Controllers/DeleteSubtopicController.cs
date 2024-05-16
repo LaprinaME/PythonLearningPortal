@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
 using PythonLearningPortal.ViewModels;
@@ -7,62 +6,63 @@ using System.Threading.Tasks;
 
 namespace PythonLearningPortal.Controllers
 {
-    public class EditSubtopicController : Controller
+    public class DeleteSubtopicController : Controller
     {
         private readonly PythonLearningPortalContext _context;
 
-        public EditSubtopicController(PythonLearningPortalContext context)
+        public DeleteSubtopicController(PythonLearningPortalContext context)
         {
             _context = context;
         }
 
-        [Route("EditSubtopic")]
+        [Route("DeleteSubtopic")]
 
         public async Task<IActionResult> Index()
         {
             return View("Index");
         }
 
-        // GET: EditSubtopic/Index
+        // GET: DeleteSubtopic
         [HttpGet]
-        public async Task<IActionResult> Index(int? subtopicId)
+        public async Task<IActionResult> Index(int? id)
         {
-            if (subtopicId == null)
+            if (id == null)
             {
-                // Добавляем отладочное сообщение
                 Console.WriteLine("Идентификатор подтемы равен нулю");
                 return NotFound();
             }
 
             // Находим подтему по коду
-            var subtopic = await _context.Подтемы.FindAsync(subtopicId);
+            var subtopic = await _context.Подтемы.FindAsync(id);
 
             if (subtopic == null)
             {
-                // Добавляем отладочное сообщение
-                Console.WriteLine($"Подтема с таким ID {subtopicId} не найдена");
+                Console.WriteLine($"Подтема с идентификатором {id} не найдена");
                 return NotFound();
             }
 
-            // Создаем модель представления для редактирования подтемы
-            var model = new EditSubtopicViewModel
+            // Создаем модель представления для удаления подтемы
+            var model = new DeleteSubtopicViewModel
             {
                 SubtopicCode = subtopic.Код_подтемы,
-                TopicCode = subtopic.Код_темы,
                 NameSubtopic = subtopic.Название_подтемы
             };
 
             return View(model);
         }
 
-        // POST: EditSubtopic/Index
-        [HttpPost]
+        // POST: DeleteSubtopic
+        [HttpPost("")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(EditSubtopicViewModel viewModel)
+        public async Task<IActionResult> Delete(DeleteSubtopicViewModel viewModel)
         {
+            if (viewModel == null)
+            {
+                return BadRequest();
+            }
+
             if (ModelState.IsValid)
             {
-                // Находим подтему по коду
                 var subtopic = await _context.Подтемы.FindAsync(viewModel.SubtopicCode);
 
                 if (subtopic == null)
@@ -70,16 +70,13 @@ namespace PythonLearningPortal.Controllers
                     return NotFound();
                 }
 
-                // Обновляем данные подтемы
-                subtopic.Название_подтемы = viewModel.NameSubtopic;
-
-                // Сохраняем изменения в базе данных
+                _context.Подтемы.Remove(subtopic);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(viewModel);
+            return BadRequest(ModelState);
         }
     }
 }

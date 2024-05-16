@@ -14,6 +14,9 @@ namespace PythonLearningPortal.Controllers
         {
             _context = context;
         }
+
+        [Route("DeleteTopic")]
+
         public async Task<IActionResult> Index()
         {
             return View("Index");
@@ -21,20 +24,22 @@ namespace PythonLearningPortal.Controllers
 
 
         // GET: DeleteTopic/Index
-        [Route("DeleteTopic")]
         [HttpGet]
         public async Task<IActionResult> Index(int? id)
         {
             if (id == null)
             {
+                // отладочное сообщение
+                Console.WriteLine("Идентификатор темы равен нулю");
                 return NotFound();
             }
-
             // Находим тему по коду
             var topic = await _context.Темы.FindAsync(id);
 
             if (topic == null)
             {
+                // отладочное сообщение
+                Console.WriteLine($"Тема с таким кодом {id} не найдена");
                 return NotFound();
             }
 

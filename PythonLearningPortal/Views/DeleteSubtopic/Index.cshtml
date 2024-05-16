@@ -1,4 +1,4 @@
-﻿@model PythonLearningPortal.ViewModels.DeleteTopicViewModel
+﻿@model PythonLearningPortal.ViewModels.DeleteSubtopicViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,12 +9,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('/images/picture.jpg');
-            background-size: cover; /* ensures the background image covers the entire screen */
-            background-repeat: no-repeat; /* prevents the background image from repeating */
-            background-attachment: fixed; /* ensures the background image stays fixed while scrolling */
-            background-position: center; /* centers the background image */
-            color: #333;
+            background-image: url('/images/print.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            color: #222;
             margin: 0;
             padding: 0;
         }
@@ -62,19 +62,18 @@
 <body>
     <div class="container">
         <h1>@ViewData["Title"]</h1>
-
         <form asp-action="Delete" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="TopicCode" class="control-label">Код темы</label>
-                    <input asp-for="TopicCode" class="form-control" />
-                    <span asp-validation-for="TopicCode" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="NameTopic" class="control-label">Название темы</label>
-                    <input asp-for="NameTopic" class="form-control" />
-                    <span asp-validation-for="NameTopic" class="text-danger"></span>
-                </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SubtopicCode" class="control-label">Код подтемы</label>
+                <input asp-for="SubtopicCode" class="form-control" />
+                <span asp-validation-for="SubtopicCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NameSubtopic" class="control-label">Название подтемы</label>
+                <input asp-for="NameSubtopic" class="form-control" />
+                <span asp-validation-for="NameSubtopic" class="text-danger"></span>
+            </div>
             <div class="btn-container">
                 <button type="submit" class="btn">Удалить</button>
                 <a asp-action="Index" class="btn btn-default">Отмена</a>
