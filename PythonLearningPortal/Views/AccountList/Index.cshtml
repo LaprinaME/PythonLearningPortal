@@ -3,65 +3,206 @@
 @{
     ViewData["Title"] = "Список аккаунтов";
 }
-
-<style>
-    body {
-        background: linear-gradient(135deg, #00ff9b, #ffcd3c);
-        font-family: Arial, sans-serif; /* Шрифт для текста */
-    }
-
-    h1 {
-        color: #fff; /* Цвет заголовка */
-        text-align: center; /* Выравнивание текста по центру */
-        padding: 20px 0; /* Отступы сверху и снизу */
-    }
-
-    table {
-        width: 100%; /* Ширина таблицы по всей ширине экрана */
-        border-collapse: collapse; /* Скрытие границ между ячейками */
-        border: 5px solid #fff; /* Цветная граница таблицы */
-        border-radius: 10px; /* Скругление углов таблицы */
-    }
-
-    th, td {
-        padding: 10px; /* Внутренние отступы ячеек */
-        text-align: center; /* Выравнивание текста по центру */
-    }
-
-    thead {
-        background-color: #fff; /* Цвет фона заголовка таблицы */
-        color: #333; /* Цвет текста заголовка таблицы */
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #f2f2f2; /* Цвет фона для четных строк */
-    }
-
-    tbody tr:hover {
-        background-color: #ddd; /* Цвет фона при наведении на строку */
-    }
-</style>
-
-<h1>@ViewData["Title"]</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Код аккаунта</th>
-            <th>Логин</th>
-            <th>Пароль</th>
-            <th>Роль</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var account in Model)
-        {
-            <tr>
-                <td>@account.Код_аккаунта</td>
-                <td>@account.Логин</td>
-                <td>@account.Пароль</td>
-                <td>@account.Роли.Название_роли</td>
-            </tr>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #00ff9b, #ffcd3c);
+            font-family: Arial, sans-serif; /* Шрифт для текста */
         }
-    </tbody>
-</table>
+
+        h1 {
+            color: #fff; /* Цвет заголовка */
+            text-align: center; /* Выравнивание текста по центру */
+            padding: 20px 0; /* Отступы сверху и снизу */
+        }
+
+        table {
+            width: 100%; /* Ширина таблицы по всей ширине экрана */
+            border-collapse: collapse; /* Скрытие границ между ячейками */
+            border: 5px solid #fff; /* Цветная граница таблицы */
+            border-radius: 10px; /* Скругление углов таблицы */
+        }
+
+        th, td {
+            padding: 10px; /* Внутренние отступы ячеек */
+            text-align: center; /* Выравнивание текста по центру */
+        }
+
+        thead {
+            background-color: #fff; /* Цвет фона заголовка таблицы */
+            color: #333; /* Цвет текста заголовка таблицы */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Цвет фона для четных строк */
+        }
+
+        tbody tr:hover {
+            background-color: #ddd; /* Цвет фона при наведении на строку */
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #555;
+            }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+            width: 200px; /* Ширина контейнера */
+            height: 40px; /* Высота контейнера */
+            margin: 0 auto; /* Центрирование по горизонтали */
+        }
+
+        .return-button {
+            padding: 8px 16px; /* Уменьшаем размер кнопки */
+            width: 100%; /* Занимает всю доступную ширину контейнера */
+            height: 100%; /* Занимает всю доступную высоту контейнера */
+            background: linear-gradient(135deg, #FFC0CB, #FFD700, #90EE90, #87CEFA, #9370DB, #FFA07A, #FA8072);
+            color: #fff;
+            border: 2px solid #555;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.5s;
+            margin-top: 50px;
+        }
+
+            .return-button:hover {
+                background-size: 400% 400%;
+            }
+
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    @section Header {
+        <header>
+            <h1>Учебник Python</h1>
+            <div class="header-buttons">
+                <div class="button-container">
+                    <form method="get" action="/Home/Index">
+                        <button type="submit" class="return-button">Вернуться на главную</button>
+                    </form>
+                </div>
+                <div class="button-container">
+                    <form method="get" action="/MenuAdmin/Index">
+                        <button type="submit" class="return-button">Вернуться в меню администратора</button>
+                    </form>
+                </div>
+            </div>
+        </header>
+    }
+    <h1>@ViewData["Title"]</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Код аккаунта</th>
+                <th>Логин</th>
+                <th>Пароль</th>
+                <th>Роль</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model)
+            {
+                <tr class="account-row" data-login="@account.Логин" data-password="@account.Пароль" data-role="@account.Роли.Название_роли">
+                    <td>@account.Код_аккаунта</td>
+                    <td>@account.Логин</td>
+                    <td>@account.Пароль</td>
+                    <td>@account.Роли.Название_роли</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-login"></h2>
+            <p id="modal-password"></p>
+            <p id="modal-role"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const rows = document.querySelectorAll('.account-row');
+            const modal = document.getElementById('myModal');
+            const modalLogin = document.getElementById('modal-login');
+            const modalPassword = document.getElementById('modal-password');
+            const modalRole = document.getElementById('modal-role');
+            const span = document.getElementsByClassName('close')[0];
+
+            rows.forEach(row => {
+                row.addEventListener('click', () => {
+                    const login = row.getAttribute('data-login');
+                    const password = row.getAttribute('data-password');
+                    const role = row.getAttribute('data-role');
+                    modalLogin.textContent = "Логин: " + login;
+                    modalPassword.textContent = "Пароль: " + password;
+                    modalRole.textContent = "Роль: " + role;
+                    modal.style.display = "block";
+                });
+            });
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -13,6 +13,46 @@
     <link rel="stylesheet" href="@Url.Content("~/css/addtopic.css")">
 </head>
 <body style="background-image: url('/images/image.jpg');">
+    @section Header {
+        <header style=" background: linear-gradient(135deg, #FFC0CB, #FFD700, #90EE90, #87CEFA, #9370DB, #FFA07A, #FA8072);
+    color: #fff; /* Цвет текста */
+    text-align: center; /* Центрируем текст */
+    padding: 20px 0; /* Добавляем отступы */">
+            <h1>Учебник Python</h1>
+            <div class="button-container" style="text-align: center;
+    margin-top: 20px;
+    width: 200px; /* Ширина контейнера */
+    height: 40px; /* Высота контейнера */
+    margin: 0 auto; /* Центрирование по горизонтали */">
+                <form method="get" action="/Home/Index">
+                    <button type="submit" style="padding: 8px 16px; /* Уменьшаем размер кнопки */
+    width: 100%; /* Занимает всю доступную ширину контейнера */
+    height: 100%; background: linear-gradient(135deg, #FFC0CB, #FFD700, #90EE90, #87CEFA, #9370DB, #FFA07A, #FA8072);
+    color: #fff;
+    border: 2px solid #555;
+    border-radius: 5px;" class="return-button">
+                        Вернуться на главную
+                    </button>
+                </form>
+            </div>
+            <div class="button-container" style="text-align: center;
+    margin-top: 20px;
+    width: 200px; /* Ширина контейнера */
+    height: 40px; /* Высота контейнера */
+    margin: 0 auto; /* Центрирование по горизонтали */">
+                <form method="get" action="/MenuAdmin/Index">
+                    <button type="submit" style="padding: 8px 16px; /* Уменьшаем размер кнопки */
+    width: 100%; /* Занимает всю доступную ширину контейнера */
+    height: 100%; background: linear-gradient(135deg, #FFC0CB, #FFD700, #90EE90, #87CEFA, #9370DB, #FFA07A, #FA8072);
+    color: #fff;
+    border: 2px solid #555;
+    border-radius: 5px;" class="return-button">
+                        Вернуться в меню
+                    </button>
+                </form>
+            </div>
+        </header>
+    }
     <h1 style="color: #333;">@ViewData["Title"]</h1>
     <div class="addtopic-container" style="color: #333;">
     <div class="col-md-4">
@@ -35,5 +75,13 @@
                 </div>
             </form>
     </div>
+        @section Footer {
+            <footer style=" background: linear-gradient(135deg, #FFB6C1, #FFD700, #C0C0C0, #ADD8E6);
+    color: #fff; /* Цвет текста */
+    text-align: center; /* Центрируем текст */
+    padding: 20px 0; /* Добавляем отступы */">
+                <p>&copy; 2024 Учебник Python. Все права защищены.</p>
+            </footer>
+        }
 </div>
 </body>

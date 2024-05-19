@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PythonLearningPortal.ViewModels
 {
     public class DeleteTopicViewModel
     {
-        public int TopicCode { get; set; }
-        public string NameTopic { get; set; }
+        public List<TopicViewModel> Topics { get; set; }
     }
 }

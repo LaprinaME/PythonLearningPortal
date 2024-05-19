@@ -7,5 +7,6 @@ namespace PythonLearningPortal.ViewModels
     {
         public int TopicCode { get; set; }
         public string NameTopic { get; set; }
+
     }
 }

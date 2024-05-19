@@ -8,5 +8,6 @@ namespace PythonLearningPortal.ViewModels
 
         [Display(Name = "Название подтемы")]
         public string NameSubtopic { get; set; }
+        public int TopicCode { get; set; }
     }
 }

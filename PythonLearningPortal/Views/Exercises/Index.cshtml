@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="@Url.Content("~/css/exercises.css")">
 </head>
 <body>
+    @section Header {
+        <header>
+            <h1>Учебник Python</h1>
+            <div class="header-buttons">
+                <div class="button-container">
+                    <form method="get" action="/Home/Index">
+                        <button type="submit" class="return-button">Вернуться на главную</button>
+                    </form>
+                </div>
+                <div class="button-container">
+                    <form method="get" action="/MenuAdmin/Index">
+                        <button type="submit" class="return-button">Вернуться в меню администратора</button>
+                    </form>
+                </div>
+            </div>
+        </header>
+    }
     <div class="container">
         <h1 class="big-title">Упражнения по Python</h1>
 
@@ -39,18 +56,7 @@
                 <button type="button" class="button" onclick="checkAnswer(3)">Проверить</button>
             </form>
         </div>
-
-        <div class="exercise">
-            <h2 class="main-title">Упражнение №4</h2>
-            <p class="text">Даны списки: a = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]; b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]. Нужно вернуть список, который состоит из элементов, общих для этих двух списков.</p>
-            <form id="form4" method="post">
-                <label for="code4" class="title">Ваш код на Python:</label><br>
-                <textarea id="code4" name="code" rows="6" class="new_code"></textarea><br>
-                <button type="button" class="button" onclick="checkAnswer(4)">Проверить</button>
-            </form>
-        </div>
     </div>
-
     <script>
         function checkAnswer(exerciseNumber) {
             var userInput = document.getElementById('code' + exerciseNumber).value;

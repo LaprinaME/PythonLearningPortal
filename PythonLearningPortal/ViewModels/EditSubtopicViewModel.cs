@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PythonLearningPortal.ViewModels
 {
@@ -9,5 +10,9 @@ namespace PythonLearningPortal.ViewModels
 
         [Required(ErrorMessage = "Поле 'Название подтемы' обязательно для заполнения.")]
         public string NameSubtopic { get; set; }
+
+        // Свойство для списка тем
+        public List<TopicViewModel> Topics { get; set; }
+        public List<SubtopicViewModel> Subtopics { get; set; }
     }
 }

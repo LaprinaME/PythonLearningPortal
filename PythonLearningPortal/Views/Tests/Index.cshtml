@@ -9,6 +9,23 @@
     <link rel="stylesheet" href="@Url.Content("~/css/tests.css")">
 </head>
 <body>
+    @section Header {
+        <header>
+            <h1>Учебник Python</h1>
+            <div class="header-buttons">
+                <div class="button-container">
+                    <form method="get" action="/Home/Index">
+                        <button type="submit" class="return-button">Вернуться на главную</button>
+                    </form>
+                </div>
+                <div class="button-container">
+                    <form method="get" action="/MenuAdmin/Index">
+                        <button type="submit" class="return-button">Вернуться в меню администратора</button>
+                    </form>
+                </div>
+            </div>
+        </header>
+    }
     <h1>Список тестов</h1>
     <ul>
         @foreach (var test in Model)
@@ -56,5 +73,10 @@
             }
         }
     </script>
+    @section Footer {
+        <footer>
+            <p>&copy; 2024 Учебник Python. Все права защищены.</p>
+        </footer>
+    }
 </body>
 </html>

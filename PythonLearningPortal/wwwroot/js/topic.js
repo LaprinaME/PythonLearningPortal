@@ -27,3 +27,4 @@ function toggleSubContent(subtopicId) {
         subtopicContent.style.display = "block";
     }
 }
+
