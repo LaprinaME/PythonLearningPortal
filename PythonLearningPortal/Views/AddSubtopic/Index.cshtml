@@ -4,7 +4,6 @@
     ViewData["Title"] = "Добавление новой подтемы";
 }
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +13,7 @@
 </head>
 <body style="background-image: url('/images/image.jpg');">
     @section Header {
-        <header style=" background: linear-gradient(135deg, #FFC0CB, #FFD700, #90EE90, #87CEFA, #9370DB, #FFA07A, #FA8072);
+        <header style="background: linear-gradient(135deg, #FFC0CB, #FFD700, #90EE90, #87CEFA, #9370DB, #FFA07A, #FA8072);
     color: #fff; /* Цвет текста */
     text-align: center; /* Центрируем текст */
     padding: 20px 0; /* Добавляем отступы */">
@@ -55,7 +54,7 @@
     }
     <h1 style="color: #333;">@ViewData["Title"]</h1>
     <div class="addtopic-container" style="color: #333;">
-    <div class="col-md-4">
+        <div class="col-md-4">
             <form asp-action="Create" method="post">
                 <div class="form-group">
                     <label asp-for="TopicId" class="control-label">Код темы:</label>
@@ -74,14 +73,42 @@
                     <input type="submit" value="Добавить" class="btn btn-primary" />
                 </div>
             </form>
-    </div>
+        </div>
         @section Footer {
-            <footer style=" background: linear-gradient(135deg, #FFB6C1, #FFD700, #C0C0C0, #ADD8E6);
+            <footer style="background: linear-gradient(135deg, #FFB6C1, #FFD700, #C0C0C0, #ADD8E6);
     color: #fff; /* Цвет текста */
     text-align: center; /* Центрируем текст */
     padding: 20px 0; /* Добавляем отступы */">
                 <p>&copy; 2024 Учебник Python. Все права защищены.</p>
             </footer>
         }
-</div>
+    </div>
+    <a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+    <a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+    <a href="#bottom" class="anchor anchor-down" onclick="scrollToBottom()">&darr;</a>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToBottom() {
+            const bottom = document.getElementById('bottom');
+            bottom.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    <a id="bottom"></a>
 </body>
+</html>

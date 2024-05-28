@@ -74,17 +74,15 @@
         transition: background 0.5s;
     }
 
-        .return-button:hover {
-            background-size: 400% 400%;
-        }
+    .return-button:hover {
+        background-size: 400% 400%;
+    }
 
     footer {
         background: linear-gradient(135deg, #FFB6C1, #FFD700, #C0C0C0, #ADD8E6);
         color: #fff;
         text-align: center;
         padding: 20px 0;
-        position: fixed;
-        bottom: 0;
         width: 100%;
     }
 
@@ -103,8 +101,7 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgba(0, 0, 0, 0.4);
     }
 
     .modal-content {
@@ -121,14 +118,93 @@
         float: right;
         font-size: 28px;
         font-weight: bold;
+        cursor: pointer;
     }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+    }
+
+    /* Стили для формы */
+    form {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    form div {
+        margin-bottom: 10px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    form input[type="text"] {
+        width: 300px;
+        height: 40px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    form button {
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    form button:hover {
+        background-color: #555;
+    }
+
+    /* Стили для якорей */
+    .anchor {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, rgba(255, 192, 203, 0.7), rgba(255, 215, 0, 0.7), rgba(144, 238, 144, 0.7), rgba(135, 206, 250, 0.7), rgba(147, 112, 219, 0.7), rgba(255, 160, 122, 0.7), rgba(250, 128, 114, 0.7));
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: background 0.3s, box-shadow 0.3s;
+    }
+
+        .anchor:hover {
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.15);
         }
+
+        .anchor:active {
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+        }
+
+    .anchor-up {
+        bottom: auto;
+        top: 20px;
+    }
+
+    .anchor svg {
+        fill: #fff; /* Цвет стрелочек */
+        width: 24px;
+        height: 24px;
+    }
 </style>
 
 @section Header {
@@ -150,7 +226,13 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-
+<form method="get" action="/SubtopicList/Index">
+    <div>
+        <label for="filter">Фильтр по названию подтемы:</label>
+        <input type="text" id="filter" name="filter" placeholder="Введите название подтемы" value="@ViewBag.Filter" />
+        <button type="submit">Применить фильтр</button>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -206,3 +288,33 @@
         }
     });
 </script>
+
+<a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+
+<script>
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
+<a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+<a href="#bottom" class="anchor anchor-down" onclick="scrollToBottom()">&darr;</a>
+
+<script>
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    function scrollToBottom() {
+        const bottom = document.getElementById('bottom');
+        bottom.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+<a id="bottom"></a>
+
+

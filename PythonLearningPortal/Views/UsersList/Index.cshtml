@@ -21,6 +21,7 @@
         border-collapse: collapse;
         border: 5px solid #fff;
         border-radius: 10px;
+        margin-top: 20px;
     }
 
     th, td {
@@ -83,14 +84,26 @@
         color: #fff;
         text-align: center;
         padding: 20px 0;
-        position: fixed;
-        bottom: 0;
         width: 100%;
     }
 
     .header-buttons form {
         display: inline-block;
         margin: 0;
+    }
+
+    /* Стили для поискового поля */
+    .search-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .search-input {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
     }
 
     /* Модальное окно */
@@ -129,6 +142,46 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+    /* Стили для якорей */
+    .anchor {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, rgba(255, 192, 203, 0.7), rgba(255, 215, 0, 0.7), rgba(144, 238, 144, 0.7), rgba(135, 206, 250, 0.7), rgba(147, 112, 219, 0.7), rgba(255, 160, 122, 0.7), rgba(250, 128, 114, 0.7));
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+        transition: background 0.3s, box-shadow 0.3s;
+    }
+
+        .anchor:hover {
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .anchor:active {
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.15);
+        }
+
+    .anchor-up {
+        bottom: auto;
+        top: 20px;
+    }
+
+    .anchor svg {
+        fill: #fff; /* Цвет стрелочек */
+        width: 24px;
+        height: 24px;
+    }
 </style>
 
 <h1>@ViewData["Title"]</h1>
@@ -151,6 +204,10 @@
     </header>
 }
 
+<div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Поиск по ФИО...">
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -159,7 +216,7 @@
             <th>Код аккаунта</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="userTable">
         @foreach (var user in Model)
         {
             <tr class="user-row" data-id="@user.Код_пользователя" data-name="@user.ФИО" data-account="@user.Аккаунты.Код_аккаунта">
@@ -219,5 +276,44 @@
                 modal.style.display = 'none';
             }
         }
+
+        // Фильтрация
+        const searchInput = document.getElementById('searchInput');
+        const userTable = document.getElementById('userTable');
+        const userRows = userTable.getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function () {
+            const filter = searchInput.value.toLowerCase();
+
+            for (let i = 0; i < userRows.length; i++) {
+                const td = userRows[i].getElementsByTagName('td')[1]; // 2-я колонка - ФИО
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        userRows[i].style.display = "";
+                    } else {
+                        userRows[i].style.display = "none";
+                    }
+                }
+            }
+        });
     });
 </script>
+
+<a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+
+<script>
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    function scrollToBottom() {
+        const bottom = document.getElementById('bottom');
+        bottom.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+<a id="bottom"></a>

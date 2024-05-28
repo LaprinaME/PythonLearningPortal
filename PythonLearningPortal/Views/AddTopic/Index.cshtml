@@ -81,5 +81,32 @@
             <p>&copy; 2024 Учебник Python. Все права защищены.</p>
         </footer>
     }
+    <a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+    <a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+    <a href="#bottom" class="anchor anchor-down" onclick="scrollToBottom()">&darr;</a>
+
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollToBottom() {
+            const bottom = document.getElementById('bottom');
+            bottom.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+    <a id="bottom"></a>
 </body>
 </html>

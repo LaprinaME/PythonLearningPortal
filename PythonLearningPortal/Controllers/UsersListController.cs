@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PythonLearningPortal.Controllers
@@ -16,10 +17,18 @@ namespace PythonLearningPortal.Controllers
         }
 
         // GET: UsersList
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string searchString)
         {
-            var users = await _context.Пользователи.Include(u => u.Аккаунты).ToListAsync();
-            return View(users);
+            var users = from u in _context.Пользователи.Include(u => u.Аккаунты)
+                        select u;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(u => u.ФИО.Contains(searchString));
+            }
+
+            return View(await users.ToListAsync());
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PythonLearningPortal.Controllers
@@ -16,9 +17,16 @@ namespace PythonLearningPortal.Controllers
         }
 
         // GET: RoleList
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter)
         {
-            var roles = await _context.Роли.ToListAsync();
+            var rolesQuery = _context.Роли.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter))
+            {
+                rolesQuery = rolesQuery.Where(r => r.Название_роли.Contains(filter));
+            }
+
+            var roles = await rolesQuery.ToListAsync();
             return View(roles);
         }
     }
