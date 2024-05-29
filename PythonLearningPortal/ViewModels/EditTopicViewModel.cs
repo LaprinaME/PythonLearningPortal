@@ -8,5 +8,9 @@ namespace PythonLearningPortal.ViewModels
 
         [Required(ErrorMessage = "Поле 'Название темы' обязательно для заполнения.")]
         public string NameTopic { get; set; }
+
+        public List<TopicViewModel> Topics { get; set; }
+        public List<SubtopicViewModel> Subtopics { get; set; }
     }
 }
+

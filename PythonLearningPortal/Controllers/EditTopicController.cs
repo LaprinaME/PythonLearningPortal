@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
 using PythonLearningPortal.ViewModels;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,14 +16,22 @@ namespace PythonLearningPortal.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View("Index");
+            var viewModel = new EditTopicViewModel
+            {
+                Topics = await _context.Темы
+                    .Select(t => new TopicViewModel
+                    {
+                        TopicId = t.Код_темы,
+                        TopicTitle = t.Название_темы
+                    }).ToListAsync(),
+            };
+            
+            return View(viewModel);
         }
-
-        [Route("EditTopic")]
-
-        // GET: EditTopic/Index
+        //[Route("EditTopic")]
+        [HttpPost]
         public async Task<IActionResult> Index(int? id)
         {
             if (id == null)
@@ -32,18 +39,29 @@ namespace PythonLearningPortal.Controllers
                 return NotFound();
             }
 
-            // Находим тему по идентификатору
             var topic = await _context.Темы.FindAsync(id);
             if (topic == null)
             {
                 return NotFound();
             }
 
-            // Преобразование модели данных в модель представления
             var viewModel = new EditTopicViewModel
             {
                 TopicCode = topic.Код_темы,
-                NameTopic = topic.Название_темы
+                NameTopic = topic.Название_темы,
+                Topics = await _context.Темы
+                    .Select(t => new TopicViewModel
+                    {
+                        TopicId = t.Код_темы,
+                        TopicTitle = t.Название_темы
+                    }).ToListAsync(),
+                Subtopics = await _context.Подтемы
+                    .Where(st => st.Код_темы == id)
+                    .Select(st => new SubtopicViewModel
+                    {
+                        SubtopicId = st.Код_подтемы,
+                        SubtopicTitle = st.Название_подтемы
+                    }).ToListAsync()
             };
 
             return View(viewModel);
@@ -62,17 +80,13 @@ namespace PythonLearningPortal.Controllers
             {
                 try
                 {
-                    // Находим тему по идентификатору
                     var topic = await _context.Темы.FindAsync(id);
                     if (topic == null)
                     {
                         return NotFound();
                     }
 
-                    // Обновляем данные темы из модели представления
                     topic.Название_темы = viewModel.NameTopic;
-
-                    // Сохраняем изменения в базе данных
                     _context.Update(topic);
                     await _context.SaveChangesAsync();
 
@@ -90,6 +104,22 @@ namespace PythonLearningPortal.Controllers
                     }
                 }
             }
+
+            viewModel.Topics = await _context.Темы
+                .Select(t => new TopicViewModel
+                {
+                    TopicId = t.Код_темы,
+                    TopicTitle = t.Название_темы
+                }).ToListAsync();
+
+            viewModel.Subtopics = await _context.Подтемы
+                .Where(st => st.Код_темы == id)
+                .Select(st => new SubtopicViewModel
+                {
+                    SubtopicId = st.Код_подтемы,
+                    SubtopicTitle = st.Название_подтемы
+                }).ToListAsync();
+
             return View(viewModel);
         }
 
