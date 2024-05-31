@@ -16,6 +16,8 @@ namespace PythonLearningPortal.Controllers
         {
             _context = context;
         }
+
+        // Метод для отображения списка тем
         public async Task<IActionResult> IndexAsync()
         {
             var viewModel = new EditTopicViewModel
@@ -27,12 +29,14 @@ namespace PythonLearningPortal.Controllers
                         TopicTitle = t.Название_темы
                     }).ToListAsync(),
             };
-            
+
             return View(viewModel);
         }
-        //[Route("EditTopic")]
+
+        // Метод для отображения формы редактирования темы
         [HttpPost]
-        public async Task<IActionResult> Index(int? id)
+        [Route("EditTopic/Details/{id?}")]
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -67,9 +71,11 @@ namespace PythonLearningPortal.Controllers
             return View(viewModel);
         }
 
+        // Метод для сохранения изменений в теме
         [HttpPost]
+        [Route("EditTopic/Save/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(int id, EditTopicViewModel viewModel)
+        public async Task<IActionResult> Save(int id, EditTopicViewModel viewModel)
         {
             if (id != viewModel.TopicCode)
             {
@@ -90,7 +96,7 @@ namespace PythonLearningPortal.Controllers
                     _context.Update(topic);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("IndexAsync");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -120,7 +126,7 @@ namespace PythonLearningPortal.Controllers
                     SubtopicTitle = st.Название_подтемы
                 }).ToListAsync();
 
-            return View(viewModel);
+            return View("Details", viewModel);
         }
 
         private bool TopicExists(int id)
