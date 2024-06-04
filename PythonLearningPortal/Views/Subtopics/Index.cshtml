@@ -1,0 +1,35 @@
+﻿@model IEnumerable<PythonLearningPortal.Models.Подтемы>
+
+@{
+    ViewData["Title"] = "Подтемы";
+}
+
+<h1>Подтемы</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Создать новую подтему</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название подтемы</th>
+            <th>Название темы</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Название_подтемы</td>
+                <td>@item.Темы?.Название_темы</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Код_подтемы" class="btn btn-secondary">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@item.Код_подтемы" class="btn btn-info">Подробности</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Код_подтемы" class="btn btn-danger">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

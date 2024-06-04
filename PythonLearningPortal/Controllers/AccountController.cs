@@ -18,23 +18,27 @@ namespace PythonLearningPortal.Controllers
         {
             _context = context;
         }
+
         // GET: /Account/Login
         [HttpGet]
         public IActionResult Login()
         {
             return View("~/Views/Account/Login.cshtml");
         }
+
         // GET: /Account/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View("~/Views/Account/Register.cshtml");
         }
+
         // GET: /Account/RegistrationSuccess
         public IActionResult RegistrationSuccess()
         {
             return View("~/Views/Home/Index.cshtml");
         }
+
         // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -52,39 +56,48 @@ namespace PythonLearningPortal.Controllers
                     // Проверяем, существует ли роль пользователя
                     if (user.Роли != null)
                     {
-                        // Определяем код роли пользователя
                         var roleCode = user.Роли.Код_роли;
+
+                        // Создаем claims
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.Логин),
+                            new Claim(ClaimTypes.Role, roleCode.ToString())
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = true // Cookie будет сохранена даже после закрытия браузера
+                        };
+
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
                         // Перенаправляем на соответствующую страницу в зависимости от роли
                         if (roleCode == 1)
                         {
-                            // Роль с индексом 1 - перенаправление на страницу меню студента
                             return RedirectToAction("Index", "MenuStudent");
                         }
                         else if (roleCode == 2)
                         {
-                            // Роль с индексом 2 - перенаправление на страницу меню учителя
                             return RedirectToAction("Index", "MenuTeacher");
                         }
                         else if (roleCode == 3)
                         {
-                            // Роль с индексом 3 - перенаправление на страницу меню админа
                             return RedirectToAction("Index", "MenuAdmin");
                         }
                     }
                     else
                     {
-                        // Если роль пользователя не определена, добавляем сообщение об ошибке в ModelState
                         ModelState.AddModelError(string.Empty, "Роль пользователя не определена");
                     }
                 }
                 else
                 {
-                    // Если пользователь не найден, добавляем сообщение об ошибке в ModelState
                     ModelState.AddModelError(string.Empty, "Неверный логин или пароль");
                 }
             }
-            // Если ModelState невалиден или произошла ошибка при проверке, возвращаем представление с моделью для исправления ошибок
             return View(model);
         }
 
@@ -124,6 +137,22 @@ namespace PythonLearningPortal.Controllers
                 _context.Add(account);
                 await _context.SaveChangesAsync();
 
+                // Автоматический вход после регистрации
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, account.Логин),
+                    new Claim(ClaimTypes.Role, account.Роли.Код_роли.ToString())
+                };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
                 // Проверка роли и перенаправление на соответствующую страницу
                 if (model.RoleCode == 1)
                 {
@@ -142,8 +171,15 @@ namespace PythonLearningPortal.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            // Если ModelState невалиден, возвращаем представление с моделью для исправления ошибок
             return View(model);
+        }
+
+        // GET: /Account/Logout
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
         }
     }
 }
