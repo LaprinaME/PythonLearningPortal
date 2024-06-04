@@ -3,7 +3,103 @@
 @{
     ViewData["Title"] = "Редактировать подтему";
 }
+<style>
+    body {
+        background: linear-gradient(to right, #ff6ec7, #2f2f2f);
+        font-family: Arial, sans-serif;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
+    h1, h2 {
+        color: #ff6ec7;
+        font-weight: bold;
+    }
+
+    .btn, a {
+        border-radius: 50px;
+        border: 2px solid #ff6ec7;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #ff6ec7;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+    }
+
+        .btn:hover, a:hover {
+            background-color: #e05cae;
+            color: #ffffff;
+        }
+
+    .row {
+        margin-bottom: 15px;
+    }
+
+    .container {
+        background-color: #3a3a3a;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .control-label {
+        color: #ff6ec7;
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #ff6ec7;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #2f2f2f;
+        color: #ffffff;
+    }
+
+    .text-danger {
+        color: #ff6ec7;
+    }
+
+    .anchor {
+        position: fixed;
+        bottom: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 24px;
+        border-radius: 50%;
+        background-color: #ff6ec7;
+        color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .anchor:hover {
+            background-color: #e05cae;
+        }
+
+    .anchor-up {
+        right: 20px;
+    }
+
+    .anchor-down {
+        left: 20px;
+    }
+</style>
 <h1>Редактировать подтему</h1>
 
 <h4>Подтемы</h4>

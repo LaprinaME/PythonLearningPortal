@@ -3,7 +3,111 @@
 @{
     ViewData["Title"] = "Удалить подтему";
 }
+<style>
+    body {
+        background: linear-gradient(to right, #ff6ec7, #2f2f2f);
+        font-family: Arial, sans-serif;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
+    h1, h3, h4 {
+        color: #FFA8F3;
+        font-weight: bold;
+        margin: 20px;
+    }
+
+    .btn, a {
+        border-radius: 50px;
+        border: 2px solid #545454;
+        margin: 10px; /* Увеличение расстояния между кнопками */
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #ff6ec7;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+        display: inline-block; /* Обеспечивает наличие отступов между кнопками */
+    }
+
+        .btn:hover, a:hover {
+            background-color: #e05cae;
+            color: #ffffff;
+        }
+
+    .btn-danger {
+        background-color: #ff4c4c;
+        border: 2px solid #ff4c4c;
+    }
+
+        .btn-danger:hover {
+            background-color: #e04343;
+            border: 2px solid #e04343;
+        }
+
+    .row {
+        margin: 20px;
+        width: 100%;
+        max-width: 800px;
+        background-color: #3a3a3a;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    dt {
+        color: #FFA8F3;
+        font-weight: bold;
+    }
+
+    dd {
+        margin-left: 0;
+        color: #ffffff;
+    }
+
+    .text-danger {
+        color: #ff6ec7;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .anchor {
+        position: fixed;
+        bottom: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 24px;
+        border-radius: 50%;
+        background-color: #ff6ec7;
+        color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .anchor:hover {
+            background-color: #e05cae;
+        }
+
+    .anchor-up {
+        right: 20px;
+    }
+
+    .anchor-down {
+        left: 20px;
+    }
+</style>
 <h1>Удалить подтему</h1>
 
 <h4>Подтемы</h4>

@@ -42,29 +42,7 @@ namespace PythonLearningPortal.Controllers
 
             return View(subtopic);
         }
-
-        // GET: Subtopics/Create
-        public IActionResult Create()
-        {
-            ViewData["Код_темы"] = new SelectList(_context.Темы, "Код_темы", "Название_темы");
-            return View();
-        }
-
-        // POST: Subtopics/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Код_подтемы,Название_подтемы,Код_темы")] Подтемы subtopic)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(subtopic);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Код_темы"] = new SelectList(_context.Темы, "Код_темы", "Название_темы", subtopic.Код_темы);
-            return View(subtopic);
-        }
-
+     
         // GET: Subtopics/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

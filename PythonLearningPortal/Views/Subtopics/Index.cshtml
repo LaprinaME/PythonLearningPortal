@@ -3,13 +3,127 @@
 @{
     ViewData["Title"] = "Подтемы";
 }
+<style>
+    body {
+        background: linear-gradient(to right, #ff6ec7, #2f2f2f);
+        font-family: Arial, sans-serif;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
 
+    h1, h2 {
+        color: #FFA8F3;
+        font-weight: bold;
+        margin: 50px 20px 20px 20px;
+    }
+
+    .btn, a {
+        border-radius: 50px;
+        border: 2px solid #545454;
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #ff6ec7;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn:hover, a:hover {
+            background-color: #e05cae;
+            color: #fff;
+        }
+
+    .table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+
+        .table th {
+            background-color: #3a3a3a;
+            color: #111;
+            border: 1px solid #545454;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table td {
+            background-color: #2f2f2f;
+            color: #111;
+            border: 1px solid #545454;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table a {
+            color: #111;
+            text-decoration: none;
+        }
+
+            .table a:hover {
+                text-decoration: underline;
+            }
+
+    p a {
+        margin-left: 20px;
+    }
+
+    .button-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .return-button {
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        background-color: #ff6ec7;
+        color: #ffffff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .return-button:hover {
+            background-color: #e05cae;
+        }
+
+    .anchor {
+        position: fixed;
+        bottom: 20px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 24px;
+        border-radius: 50%;
+        background-color: #ff6ec7;
+        color: #ffffff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .anchor:hover {
+            background-color: #e05cae;
+        }
+
+    .anchor-up {
+        right: 20px;
+    }
+
+    .anchor-down {
+        left: 20px;
+    }
+</style>
 <h1>Подтемы</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Создать новую подтему</a>
-</p>
-
 <table class="table">
     <thead>
         <tr>
@@ -33,3 +147,21 @@
         }
     </tbody>
 </table>
+<a href="#" class="anchor anchor-up" onclick="scrollToTop()">&uarr;</a>
+<a href="#bottom" class="anchor anchor-down" onclick="scrollToBottom()">&darr;</a>
+
+<script>
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    function scrollToBottom() {
+        const bottom = document.getElementById('bottom');
+        bottom.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+<a id="bottom"></a>

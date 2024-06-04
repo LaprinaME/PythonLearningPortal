@@ -6,8 +6,8 @@ using PythonLearningPortal.Controllers; // Подключение простра
 using PythonLearningPortal.Models; // Подключение пространства имен с моделями данных.
 using PythonLearningPortal.DataContext; // Подключение пространства имен с контекстом базы данных.
 using System.Collections.Generic; // Подключение библиотеки для работы с коллекциями.
-using System.Linq; // Подключение библиотеки для работы с LINQ.
-using System.Threading.Tasks; // Подключение пространства имен для работы с задачами;
+using System.Linq; 
+using System.Threading.Tasks; 
 
 namespace PythonLearningPortal.Test // Определение нового пространства имен для тестов.
 {
