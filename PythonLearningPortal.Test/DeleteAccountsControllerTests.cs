@@ -1,53 +1,106 @@
-﻿using Xunit;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using PythonLearningPortal.Controllers;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
+using PythonLearningPortal.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xunit;
 
-namespace PythonLearningPortal.Test
+namespace PythonLearningPortal.Tests
 {
     public class DeleteAccountsControllerTests
     {
+        private DbContextOptions<PythonLearningPortalContext> CreateNewContextOptions()
+        {
+            // Create a new service provider, and therefore a new in-memory database.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+
+            var builder = new DbContextOptionsBuilder<PythonLearningPortalContext>();
+            builder.UseInMemoryDatabase("TestDatabase")
+                   .UseInternalServiceProvider(serviceProvider);
+
+            return builder.Options;
+        }
+
         [Fact]
-        public async Task Delete_ReturnsRedirectToIndex_WhenAccountExists()
+        public async Task Index_ReturnsViewResult_WithListOfAccounts()
         {
             // Arrange
-            var mockContext = new Mock<PythonLearningPortalContext>(); // Создание mock-объекта контекста базы данных.
+            var options = CreateNewContextOptions();
 
-            var accountId = 1;
-            var existingAccount = new Аккаунты { Код_аккаунта = accountId };
-            mockContext.Setup(c => c.Аккаунты.FindAsync(accountId)).ReturnsAsync(existingAccount); // Настройка mock-объекта контекста для возврата существующей учетной записи.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Аккаунты.Add(new Аккаунты { Код_аккаунта = 1, Логин = "user1", Пароль = "pass1", Код_роли = 1 });
+                context.Аккаунты.Add(new Аккаунты { Код_аккаунта = 2, Логин = "user2", Пароль = "pass2", Код_роли = 2 });
+                context.SaveChanges();
+            }
 
-            var controller = new DeleteAccountsController(mockContext.Object); // Создание экземпляра контроллера с использованием mock-контекста.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new DeleteAccountsController(context);
 
-            // Act
-            var result = await controller.Delete(accountId); // Вызов метода Delete контроллера.
+                // Act
+                var result = await controller.Index();
 
-            // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result); // Проверка, что результат является перенаправлением.
-            Assert.Equal("Index", redirectToActionResult.ActionName); // Проверка, что перенаправление происходит на действие Index.
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<List<AccountViewModel>>(viewResult.Model);
+                Assert.Equal(2, model.Count);
+                Assert.Equal("user1", model[0].Логин);
+                Assert.Equal("user2", model[1].Логин);
+            }
         }
 
         [Fact]
         public async Task Delete_ReturnsNotFound_WhenAccountDoesNotExist()
         {
             // Arrange
-            var mockContext = new Mock<PythonLearningPortalContext>(); // Создание mock-объекта контекста базы данных.
+            var options = CreateNewContextOptions();
 
-            var accountId = 1;
-            mockContext.Setup(c => c.Аккаунты.FindAsync(accountId)).ReturnsAsync((Аккаунты)null); // Настройка mock-объекта контекста для возврата null при поиске учетной записи.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new DeleteAccountsController(context);
 
-            var controller = new DeleteAccountsController(mockContext.Object); // Создание экземпляра контроллера с использованием mock-контекста.
+                // Act
+                var result = await controller.Delete(1);
 
-            // Act
-            var result = await controller.Delete(accountId); // Вызов метода Delete контроллера.
+                // Assert
+                Assert.IsType<NotFoundResult>(result);
+            }
+        }
 
-            // Assert
-            var notFoundResult = Assert.IsType<NotFoundResult>(result); // Проверка, что результат является NotFoundResult.
-            Assert.Equal(404, notFoundResult.StatusCode); // Проверка, что код статуса соответствует "Not Found".
+        [Fact]
+        public async Task Delete_RedirectsToIndex_WhenAccountIsDeleted()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Аккаунты.Add(new Аккаунты { Код_аккаунта = 1, Логин = "user1", Пароль = "pass1", Код_роли = 1 });
+                context.SaveChanges();
+            }
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new DeleteAccountsController(context);
+
+                // Act
+                var result = await controller.Delete(1);
+
+                // Assert
+                var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+                Assert.Equal(nameof(controller.Index), redirectToActionResult.ActionName);
+
+                var account = await context.Аккаунты.FindAsync(1);
+                Assert.Null(account);
+            }
         }
     }
 }
-

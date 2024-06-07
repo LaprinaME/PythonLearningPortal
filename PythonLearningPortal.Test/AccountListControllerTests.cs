@@ -1,72 +1,129 @@
-﻿using Xunit;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using PythonLearningPortal.Controllers;
-using PythonLearningPortal.Models;
 using PythonLearningPortal.DataContext;
+using PythonLearningPortal.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
-namespace PythonLearningPortal.Test
+namespace PythonLearningPortal.Tests
 {
     public class AccountListControllerTests
     {
-        [Fact]
-        public async Task Index_ReturnsFilteredAccount()
+        private DbContextOptions<PythonLearningPortalContext> CreateNewContextOptions()
         {
-            var mockContext = new Mock<PythonLearningPortalContext>();
-            var mockDbSet = new Mock<DbSet<Аккаунты>>();
+            // Create a new service provider, and therefore a new in-memory database.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
 
-            var data = new List<Аккаунты>
-            {
-                new Аккаунты { Логин = "user1", Пароль = "password1" }
-            }.AsQueryable();
+            var builder = new DbContextOptionsBuilder<PythonLearningPortalContext>();
+            builder.UseInMemoryDatabase("TestDatabase")
+                   .UseInternalServiceProvider(serviceProvider);
 
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
-
-            mockContext.Setup(c => c.Аккаунты).Returns(mockDbSet.Object);
-
-            var controller = new AccountListController(mockContext.Object);
-
-            var result = await controller.Index("user1", null);
-
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<List<Аккаунты>>(viewResult.Model);
-            Assert.Single(model);
-            Assert.Contains(model, a => a.Логин == "user1");
+            return builder.Options;
         }
 
         [Fact]
-        public async Task Index_ReturnsAccountWithLimitedLength()
+        public async Task Index_ReturnsViewResult_WithAListOfAccounts()
         {
-            var mockContext = new Mock<PythonLearningPortalContext>();
-            var mockDbSet = new Mock<DbSet<Аккаунты>>();
+            // Arrange
+            var options = CreateNewContextOptions();
 
-            var data = new List<Аккаунты>
+            // Insert seed data into the database using one instance of the context
+            using (var context = new PythonLearningPortalContext(options))
             {
-                new Аккаунты { Логин = "user1", Пароль = "password1" }
-            }.AsQueryable();
+                context.Аккаунты.AddRange(
+                    new Аккаунты { Логин = "testuser1", Пароль = "password1", Код_роли = 1 },
+                    new Аккаунты { Логин = "testuser2", Пароль = "password2", Код_роли = 1 },
+                    new Аккаунты { Логин = "exampleuser", Пароль = "password3", Код_роли = 2 }
+                );
+                context.SaveChanges();
+            }
 
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockDbSet.As<IQueryable<Аккаунты>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+            // Use a clean instance of the context to run the test
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new AccountListController(context);
 
-            mockContext.Setup(c => c.Аккаунты).Returns(mockDbSet.Object);
+                // Act
+                var result = await controller.Index(null, null);
 
-            var controller = new AccountListController(mockContext.Object);
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<IEnumerable<Аккаунты>>(viewResult.ViewData.Model);
+                Assert.Equal(3, model.Count());
+            }
+        }
 
-            var result = await controller.Index(null, 10);
+        [Fact]
+        public async Task Index_WithFilter_ReturnsFilteredAccounts()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
 
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<List<Аккаунты>>(viewResult.Model);
-            Assert.Single(model);
-            Assert.Contains(model, a => a.Логин == "user1");
+            // Insert seed data into the database using one instance of the context
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Аккаунты.AddRange(
+                    new Аккаунты { Логин = "testuser1", Пароль = "password1", Код_роли = 1 },
+                    new Аккаунты { Логин = "testuser2", Пароль = "password2", Код_роли = 1 },
+                    new Аккаунты { Логин = "exampleuser", Пароль = "password3", Код_роли = 2 }
+                );
+                context.SaveChanges();
+            }
+
+            // Use a clean instance of the context to run the test
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new AccountListController(context);
+
+                // Act
+                var result = await controller.Index("test", null);
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<IEnumerable<Аккаунты>>(viewResult.ViewData.Model);
+                Assert.Equal(2, model.Count());
+                Assert.All(model, a => Assert.Contains("test", a.Логин));
+            }
+        }
+
+        [Fact]
+        public async Task Index_WithLengthFilter_ReturnsFilteredAccounts()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            // Insert seed data into the database using one instance of the context
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Аккаунты.AddRange(
+                    new Аккаунты { Логин = "short", Пароль = "password1", Код_роли = 1 },
+                    new Аккаунты { Логин = "verylongusername", Пароль = "password2", Код_роли = 1 },
+                    new Аккаунты { Логин = "mediumlen", Пароль = "password3", Код_роли = 2 }
+                );
+                context.SaveChanges();
+            }
+
+            // Use a clean instance of the context to run the test
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new AccountListController(context);
+
+                // Act
+                var result = await controller.Index(null, 8);
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<IEnumerable<Аккаунты>>(viewResult.ViewData.Model);
+                Assert.Equal(2, model.Count());
+                Assert.All(model, a => Assert.True(a.Логин.Length <= 8));
+            }
         }
     }
 }

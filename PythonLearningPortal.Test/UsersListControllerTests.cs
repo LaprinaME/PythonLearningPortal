@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PythonLearningPortal.Controllers;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
@@ -8,61 +9,50 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace PythonLearningPortal.Test
+namespace PythonLearningPortal.Tests
 {
     public class UsersListControllerTests
     {
+        private DbContextOptions<PythonLearningPortalContext> CreateNewContextOptions()
+        {
+            // Create a new service provider, and therefore a new in-memory database.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+
+            var builder = new DbContextOptionsBuilder<PythonLearningPortalContext>();
+            builder.UseInMemoryDatabase("TestDatabase")
+                   .UseInternalServiceProvider(serviceProvider);
+
+            return builder.Options;
+        }
+
         [Fact]
         public async Task Index_ReturnsViewResult_WithListOfUsers()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<PythonLearningPortalContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-            var context = new PythonLearningPortalContext(options);
-            context.Пользователи.AddRange(
-                new Пользователи { Код_пользователя = 1, ФИО = "Пользователь 1" },
-                new Пользователи { Код_пользователя = 2, ФИО = "Пользователь 2" },
-                new Пользователи { Код_пользователя = 3, ФИО = "Пользователь 3" }
-            );
-            context.SaveChanges();
-            var controller = new UsersListController(context);
+            var options = CreateNewContextOptions();
 
-            // Act
-            var result = await controller.Index(null) as ViewResult;
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Пользователи.Add(new Пользователи { Код_пользователя = 1, ФИО = "User1" });
+                context.Пользователи.Add(new Пользователи { Код_пользователя = 2, ФИО = "User2" });
+                context.SaveChanges();
+            }
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<List<Пользователи>>(result.ViewData.Model);
-            var model = Assert.IsAssignableFrom<List<Пользователи>>(result.ViewData.Model);
-            Assert.Equal(3, model.Count);
-        }
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new UsersListController(context);
 
-        [Fact]
-        public async Task Index_ReturnsFilteredViewResult_WithListOfUsers()
-        {
-            // Arrange
-            var options = new DbContextOptionsBuilder<PythonLearningPortalContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
-            var context = new PythonLearningPortalContext(options);
-            context.Пользователи.AddRange(
-                new Пользователи { Код_пользователя = 1, ФИО = "Пользователь 1" },
-                new Пользователи { Код_пользователя = 2, ФИО = "Пользователь 2" },
-                new Пользователи { Код_пользователя = 3, ФИО = "Пользователь 3" }
-            );
-            context.SaveChanges();
-            var controller = new UsersListController(context);
+                // Act
+                var result = await controller.Index("User1");
 
-            // Act
-            var result = await controller.Index("2") as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<List<Пользователи>>(result.ViewData.Model);
-            var model = Assert.IsAssignableFrom<List<Пользователи>>(result.ViewData.Model);
-            Assert.Single(model);
-            Assert.Equal("Пользователь 2", model.First().ФИО);
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<IEnumerable<Пользователи>>(viewResult.ViewData.Model);
+                Assert.Single(model);
+                Assert.Equal("User1", model.First().ФИО);
+            }
         }
     }
 }

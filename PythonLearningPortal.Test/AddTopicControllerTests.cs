@@ -1,54 +1,139 @@
-﻿using Xunit;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using PythonLearningPortal.Controllers;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
 using PythonLearningPortal.ViewModels;
+using System;
 using System.Threading.Tasks;
+using Xunit;
 
-namespace PythonLearningPortal.Test
+namespace PythonLearningPortal.Tests
 {
     public class AddTopicControllerTests
     {
-        [Fact]
-        public async Task Index_ReturnsRedirectToHomeIndex_WhenModelStateIsValid()
+        private DbContextOptions<PythonLearningPortalContext> CreateNewContextOptions()
         {
-            // Arrange
-            var mockContext = new Mock<PythonLearningPortalContext>(); // Создание mock-объекта контекста базы данных.
-            var controller = new AddTopicController(mockContext.Object); // Создание экземпляра контроллера с использованием mock-контекста.
+            // Create a new service provider, and therefore a new in-memory database.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
 
-            var viewModel = new AddTopicViewModel // Создание модели представления для тестирования.
-            {
-                TopicCode = 1,
-                NameTopic = "New Topic"
-            };
+            var builder = new DbContextOptionsBuilder<PythonLearningPortalContext>();
+            builder.UseInMemoryDatabase("TestDatabase")
+                   .UseInternalServiceProvider(serviceProvider);
 
-            // Act
-            var result = await controller.Index(viewModel); // Вызов метода Index контроллера.
-
-            // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result); // Проверка, что результат является перенаправлением.
-            Assert.Equal("Index", redirectToActionResult.ActionName); // Проверка, что перенаправление происходит на действие Index.
-            Assert.Equal("Home", redirectToActionResult.ControllerName); // Проверка, что перенаправление происходит на контроллер Home.
+            return builder.Options;
         }
 
         [Fact]
-        public async Task Index_ReturnsViewWithViewModel_WhenModelStateIsInvalid()
+        public void Index_ReturnsViewResult()
         {
             // Arrange
-            var mockContext = new Mock<PythonLearningPortalContext>(); // Создание mock-объекта контекста базы данных.
-            var controller = new AddTopicController(mockContext.Object); // Создание экземпляра контроллера с использованием mock-контекста.
+            var options = CreateNewContextOptions();
 
-            var viewModel = new AddTopicViewModel(); // Создание пустой модели представления для тестирования.
-            controller.ModelState.AddModelError("NameTopic", "Required"); // Добавление ошибки в ModelState.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new AddTopicController(context);
 
-            // Act
-            var result = await controller.Index(viewModel); // Вызов метода Index контроллера.
+                // Act
+                var result = controller.Index();
 
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result); // Проверка, что результат является представлением.
-            Assert.Equal(viewModel, viewResult.Model); // Проверка, что модель представления возвращается обратно в представление.
+                // Assert
+                Assert.IsType<ViewResult>(result);
+            }
+        }
+
+        [Fact]
+        public async Task Index_Post_RedirectsToHomeIndex_WhenModelIsValid()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new AddTopicController(context);
+                var model = new AddTopicViewModel
+                {
+                    TopicCode = 1,
+                    NameTopic = "New Topic"
+                };
+
+                // Act
+                var result = await controller.Index(model);
+
+                // Assert
+                var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+                Assert.Equal("Index", redirectToActionResult.ActionName);
+                Assert.Equal("Home", redirectToActionResult.ControllerName);
+
+                // Verify the topic was added to the database
+                var topic = await context.Темы.FirstOrDefaultAsync(t => t.Код_темы == model.TopicCode);
+                Assert.NotNull(topic);
+                Assert.Equal(model.NameTopic, topic.Название_темы);
+            }
+        }
+
+        [Fact]
+        public async Task Index_Post_ReturnsViewResult_WhenModelIsInvalid()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new AddTopicController(context);
+                controller.ModelState.AddModelError("NameTopic", "Required");
+                var model = new AddTopicViewModel
+                {
+                    TopicCode = 1,
+                    NameTopic = ""
+                };
+
+                // Act
+                var result = await controller.Index(model);
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var returnedModel = Assert.IsType<AddTopicViewModel>(viewResult.Model);
+                Assert.Equal(model, returnedModel);
+            }
+        }
+
+        [Fact]
+        public async Task Index_Post_ReturnsViewResult_WithErrorMessage_OnDbUpdateException()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var mockSet = new Mock<DbSet<Темы>>();
+                mockSet.Setup(m => m.Add(It.IsAny<Темы>())).Throws(new DbUpdateException());
+
+                var mockContext = new Mock<PythonLearningPortalContext>(options);
+                mockContext.Setup(c => c.Темы).Returns(mockSet.Object);
+
+                var controller = new AddTopicController(mockContext.Object);
+                var model = new AddTopicViewModel
+                {
+                    TopicCode = 1,
+                    NameTopic = "New Topic"
+                };
+
+                // Act
+                var result = await controller.Index(model);
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var returnedModel = Assert.IsType<AddTopicViewModel>(viewResult.Model);
+                Assert.Equal(model, returnedModel);
+                Assert.True(controller.ModelState.ContainsKey(""));
+                Assert.Equal("Произошла ошибка при добавлении новой темы. Пожалуйста, попробуйте еще раз.",
+                    controller.ModelState[""].Errors[0].ErrorMessage);
+            }
         }
     }
 }

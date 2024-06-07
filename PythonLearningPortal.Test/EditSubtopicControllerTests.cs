@@ -7,12 +7,13 @@ using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
 using PythonLearningPortal.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace PythonLearningPortal.Tests
 {
-    public class AddSubtopicControllerTests
+    public class EditSubtopicControllerTests
     {
         private DbContextOptions<PythonLearningPortalContext> CreateNewContextOptions()
         {
@@ -29,61 +30,72 @@ namespace PythonLearningPortal.Tests
         }
 
         [Fact]
-        public async Task Index_ReturnsViewResult_WhenTopicIdIsNull()
+        public async Task Index_Get_ReturnsViewResult_WithListOfTopicsAndSubtopics()
         {
             // Arrange
             var options = CreateNewContextOptions();
 
             using (var context = new PythonLearningPortalContext(options))
             {
-                var controller = new AddSubtopicController(context);
-
-                // Act
-                var result = await controller.Index(null);
-
-                // Assert
-                Assert.IsType<NotFoundResult>(result);
-            }
-        }
-
-        [Fact]
-        public async Task Index_ReturnsViewResult_WithViewModel_WhenTopicExists()
-        {
-            // Arrange
-            var options = CreateNewContextOptions();
-
-            using (var context = new PythonLearningPortalContext(options))
-            {
-                context.Темы.Add(new Темы { Код_темы = 1, Название_темы = "Test Topic" });
+                context.Темы.Add(new Темы { Код_темы = 1, Название_темы = "Topic1" });
+                context.Подтемы.Add(new Подтемы { Код_подтемы = 1, Название_подтемы = "Subtopic1", Код_темы = 1 });
                 context.SaveChanges();
             }
 
             using (var context = new PythonLearningPortalContext(options))
             {
-                var controller = new AddSubtopicController(context);
+                var controller = new EditSubtopicController(context);
+
+                // Act
+                var result = await controller.Index();
+
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsType<EditSubtopicViewModel>(viewResult.Model);
+                Assert.Single(model.Topics);
+                Assert.Single(model.Subtopics);
+            }
+        }
+
+        [Fact]
+        public async Task Index_Get_WithSubtopicId_ReturnsViewResult_WithCorrectSubtopic()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Подтемы.Add(new Подтемы { Код_подтемы = 1, Название_подтемы = "Subtopic1", Код_темы = 1 });
+                context.SaveChanges();
+            }
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new EditSubtopicController(context);
 
                 // Act
                 var result = await controller.Index(1);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                var model = Assert.IsType<AddSubtopicViewModel>(viewResult.Model);
-                Assert.Equal(1, model.TopicId);
+                var model = Assert.IsType<EditSubtopicViewModel>(viewResult.Model);
+                Assert.Equal(1, model.SubtopicCode);
+                Assert.Equal("Subtopic1", model.NameSubtopic);
             }
         }
 
         [Fact]
-        public async Task Index_ReturnsNotFound_WhenTopicDoesNotExist()
+        public async Task Index_Get_WithInvalidSubtopicId_ReturnsNotFound()
         {
             // Arrange
             var options = CreateNewContextOptions();
 
             using (var context = new PythonLearningPortalContext(options))
             {
-                var controller = new AddSubtopicController(context);
+                var controller = new EditSubtopicController(context);
 
                 // Act
-                var result = await controller.Index(99);
+                var result = await controller.Index(1);
 
                 // Assert
                 Assert.IsType<NotFoundResult>(result);
@@ -91,62 +103,63 @@ namespace PythonLearningPortal.Tests
         }
 
         [Fact]
-        public async Task Create_RedirectsToHomeIndex_WhenModelIsValid()
+        public async Task Index_Post_UpdatesSubtopicAndRedirects()
         {
             // Arrange
             var options = CreateNewContextOptions();
 
             using (var context = new PythonLearningPortalContext(options))
             {
-                context.Темы.Add(new Темы { Код_темы = 1, Название_темы = "Test Topic" });
+                context.Подтемы.Add(new Подтемы { Код_подтемы = 1, Название_подтемы = "Subtopic1", Код_темы = 1 });
                 context.SaveChanges();
             }
 
             using (var context = new PythonLearningPortalContext(options))
             {
-                var controller = new AddSubtopicController(context);
-
-                var viewModel = new AddSubtopicViewModel
+                var controller = new EditSubtopicController(context);
+                var viewModel = new EditSubtopicViewModel
                 {
-                    TopicId = 1,
-                    SubtopicName = "New Subtopic",
-                    SubtopicId = 0 // Assuming new subtopic
+                    SubtopicCode = 1,
+                    NameSubtopic = "UpdatedSubtopic",
+                    TopicCode = 1
                 };
 
                 // Act
-                var result = await controller.Create(viewModel);
+                var result = await controller.Index(viewModel);
 
                 // Assert
                 var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
                 Assert.Equal("Index", redirectToActionResult.ActionName);
                 Assert.Equal("Home", redirectToActionResult.ControllerName);
+
+                var updatedSubtopic = await context.Подтемы.FindAsync(1);
+                Assert.Equal("UpdatedSubtopic", updatedSubtopic.Название_подтемы);
             }
         }
 
         [Fact]
-        public async Task Create_ReturnsViewResult_WithSameViewModel_WhenModelIsInvalid()
+        public async Task Index_Post_WithInvalidModelState_ReturnsViewResult_WithViewModel()
         {
             // Arrange
             var options = CreateNewContextOptions();
 
             using (var context = new PythonLearningPortalContext(options))
             {
-                var controller = new AddSubtopicController(context);
-                controller.ModelState.AddModelError("SubtopicName", "Required");
-
-                var viewModel = new AddSubtopicViewModel
+                var controller = new EditSubtopicController(context);
+                controller.ModelState.AddModelError("NameSubtopic", "Required");
+                var viewModel = new EditSubtopicViewModel
                 {
-                    TopicId = 1,
-                    SubtopicName = "",
-                    SubtopicId = 0 // Assuming new subtopic
+                    SubtopicCode = 1,
+                    NameSubtopic = "InvalidSubtopic",
+                    TopicCode = 1
                 };
 
                 // Act
-                var result = await controller.Create(viewModel);
+                var result = await controller.Index(viewModel);
 
                 // Assert
                 var viewResult = Assert.IsType<ViewResult>(result);
-                var model = Assert.IsType<AddSubtopicViewModel>(viewResult.Model);
+                var model = Assert.IsType<EditSubtopicViewModel>(viewResult.Model);
                 Assert.Equal(viewModel, model);
             }
         }

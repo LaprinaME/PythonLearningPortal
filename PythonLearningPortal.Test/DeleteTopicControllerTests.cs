@@ -1,52 +1,106 @@
-﻿using Xunit;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using PythonLearningPortal.Controllers;
 using PythonLearningPortal.DataContext;
 using PythonLearningPortal.Models;
+using PythonLearningPortal.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xunit;
 
-namespace PythonLearningPortal.Test
+namespace PythonLearningPortal.Tests
 {
     public class DeleteTopicControllerTests
     {
+        private DbContextOptions<PythonLearningPortalContext> CreateNewContextOptions()
+        {
+            // Create a new service provider, and therefore a new in-memory database.
+            var serviceProvider = new ServiceCollection()
+                .AddEntityFrameworkInMemoryDatabase()
+                .BuildServiceProvider();
+
+            var builder = new DbContextOptionsBuilder<PythonLearningPortalContext>();
+            builder.UseInMemoryDatabase("TestDatabase")
+                   .UseInternalServiceProvider(serviceProvider);
+
+            return builder.Options;
+        }
+
         [Fact]
-        public async Task Delete_ReturnsRedirectToIndex_WhenTopicExists()
+        public async Task Index_ReturnsViewResult_WithListOfTopics()
         {
             // Arrange
-            var mockContext = new Mock<PythonLearningPortalContext>(); // Создание mock-объекта контекста базы данных.
+            var options = CreateNewContextOptions();
 
-            var topicId = 1;
-            var existingTopic = new Темы { Код_темы = topicId };
-            mockContext.Setup(c => c.Темы.FindAsync(topicId)).ReturnsAsync(existingTopic); // Настройка mock-объекта контекста для возврата существующей темы.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Темы.Add(new Темы { Код_темы = 1, Название_темы = "Topic1" });
+                context.Темы.Add(new Темы { Код_темы = 2, Название_темы = "Topic2" });
+                context.SaveChanges();
+            }
 
-            var controller = new DeleteTopicController(mockContext.Object); // Создание экземпляра контроллера с использованием mock-контекста.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new DeleteTopicController(context);
 
-            // Act
-            var result = await controller.Delete(topicId); // Вызов метода Delete контроллера.
+                // Act
+                var result = await controller.Index();
 
-            // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result); // Проверка, что результат является перенаправлением.
-            Assert.Equal("Index", redirectToActionResult.ActionName); // Проверка, что перенаправление происходит на действие Index.
+                // Assert
+                var viewResult = Assert.IsType<ViewResult>(result);
+                var model = Assert.IsAssignableFrom<List<TopicViewModel>>(viewResult.Model);
+                Assert.Equal(2, model.Count);
+                Assert.Equal("Topic1", model[0].TopicTitle);
+                Assert.Equal("Topic2", model[1].TopicTitle);
+            }
         }
 
         [Fact]
         public async Task Delete_ReturnsNotFound_WhenTopicDoesNotExist()
         {
             // Arrange
-            var mockContext = new Mock<PythonLearningPortalContext>(); // Создание mock-объекта контекста базы данных.
+            var options = CreateNewContextOptions();
 
-            var topicId = 1;
-            mockContext.Setup(c => c.Темы.FindAsync(topicId)).ReturnsAsync((Темы)null); // Настройка mock-объекта контекста для возврата null при поиске темы.
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new DeleteTopicController(context);
 
-            var controller = new DeleteTopicController(mockContext.Object); // Создание экземпляра контроллера с использованием mock-контекста.
+                // Act
+                var result = await controller.Delete(1);
 
-            // Act
-            var result = await controller.Delete(topicId); // Вызов метода Delete контроллера.
+                // Assert
+                Assert.IsType<NotFoundResult>(result);
+            }
+        }
 
-            // Assert
-            var notFoundResult = Assert.IsType<NotFoundResult>(result); // Проверка, что результат является NotFoundResult.
-            Assert.Equal(404, notFoundResult.StatusCode); // Проверка, что код статуса соответствует "Not Found".
+        [Fact]
+        public async Task Delete_RedirectsToIndex_WhenTopicIsDeleted()
+        {
+            // Arrange
+            var options = CreateNewContextOptions();
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                context.Темы.Add(new Темы { Код_темы = 1, Название_темы = "Topic1" });
+                context.SaveChanges();
+            }
+
+            using (var context = new PythonLearningPortalContext(options))
+            {
+                var controller = new DeleteTopicController(context);
+
+                // Act
+                var result = await controller.Delete(1);
+
+                // Assert
+                var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+                Assert.Equal(nameof(controller.Index), redirectToActionResult.ActionName);
+
+                var topic = await context.Темы.FindAsync(1);
+                Assert.Null(topic);
+            }
         }
     }
 }
